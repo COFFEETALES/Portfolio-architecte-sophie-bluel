@@ -1,0 +1,10 @@
+{
+  "name": "dwf-projet6-portfolio",
+  "version": "0.0.1",
+  "scripts": {
+    "closure-checks": "java -jar \"./node_modules/google-closure-compiler-java/compiler.jar\" --charset=\"UTF-8\" --warning_level=\"VERBOSE\" --compilation_level=\"ADVANCED_OPTIMIZATIONS\" --language_in ECMASCRIPT5_STRICT --language_out ECMASCRIPT5_STRICT --strict_mode_input --rewrite_polyfills=false --use_types_for_optimization=true --jscomp_error \"*\" --jscomp_off lintVarDeclarations --js 'utils/*.js' --js 'services/*.js' --js 'components/*.js' --js 'sophie-bluel.js' --checks_only"
+  },
+  "devDependencies": {
+    "google-closure-compiler": "^20240317.0.0"
+  }
+}
