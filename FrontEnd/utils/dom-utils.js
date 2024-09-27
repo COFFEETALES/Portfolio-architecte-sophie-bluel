@@ -2,7 +2,7 @@
 'use strict';
 
 /** @const {function():!Window} */
-var me_ = function() { return /** @type {?} */(self); };
+var me_ = function() { return /** @type {!Window} */(self); };
 
 /** @const {function():void} */
 var nullFunction = function() {};
@@ -12,4 +12,3 @@ var getElement = function(str) {
   var /** !Element */ el = /** @type{!Element} */(document.getElementById(str));
   return el;
 };
-

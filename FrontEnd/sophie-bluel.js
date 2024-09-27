@@ -2,6 +2,28 @@
 'use strict';
 
 /**
+ * @const {string}
+ */
+var ServerHost = 'http://localhost:5678';
+
+/**
+ * @typedef {
+ *  {
+ *   GET_WORKS: string
+ *  }
+ * }
+ */
+var HttpEndpointsInterface;
+
+
+/**
+ * @const {HttpEndpointsInterface!}
+ */
+var HttpEndpoints = {
+  GET_WORKS: [ServerHost, 'api', 'works'].join('/')
+};
+
+/**
  * @class
  * @constructor
  */
@@ -9,6 +31,8 @@ var SophieBluel = (
   function () {
     /** @const {GalleryComponent!} */
     this.gallery = new GalleryComponent;
+
+    this.gallery.loadGallery();
   }
 );
 
