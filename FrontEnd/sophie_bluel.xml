@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+<!-- vim: set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab : -->
+    <GalleryItemComponent xmlns="http://www.w3.org/1999/xhtml">
+        <style type="text/css">
+            :host img {
+                width: 100%;
+            }
+        </style>
+        <figure><!--
+        --><img></img><!--
+        --><figcaption></figcaption><!--
+     --></figure>
+    </GalleryItemComponent>
+</root>

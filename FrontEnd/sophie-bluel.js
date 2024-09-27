@@ -29,6 +29,8 @@ var HttpEndpoints = {
  */
 var SophieBluel = (
   function () {
+    me_().customElements.define('gallery-item', /** @type {function(new:HTMLElement)} */(GalleryItemComponent));
+
     /** @const {GalleryComponent!} */
     this.gallery = new GalleryComponent;
 

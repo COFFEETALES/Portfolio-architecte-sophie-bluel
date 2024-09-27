@@ -7,7 +7,6 @@
  */
 var GalleryComponent = (
   function () {
-
     /**
      * @const {!ProjectService}
      */
@@ -27,21 +26,33 @@ GalleryComponent.prototype.loadGallery = (
         if (!Array.isArray(arg1)) {
           throw Error('');
         }
-        console.log('this.projectService', this.projectService.getProjectCount());
+        //console.log('this.projectService', this.projectService.getProjectCount());
+
+        /** @const {!Element} */
+        var gallery = getElement('portfolio-gallery');
+
         for (var /** number */ i = 0, /** number */ length = arg1.length ; i !== length ; ++i) {
           /**
            * @const {!ProjectService_WorkInterface}
            */
           var item = arg1[i];
-          console.log(
-            item.id,
-            item.title,
-            item.imageUrl,
-            item.categoryId,
-            item.userId,
-            item.category && item.category.id,
-            item.category && item.category.name
-          );
+
+          //console.log(
+          //  item.id,
+          //  item.title,
+          //  item.imageUrl,
+          //  item.categoryId,
+          //  item.userId,
+          //  item.category && item.category.id,
+          //  item.category && item.category.name
+          //);
+
+          /** @const {!Element} */
+          var galleryItem = document.createElement('gallery-item');
+          galleryItem.setAttribute('id', item.id);
+          galleryItem.setAttribute('title', item.title);
+          galleryItem.setAttribute('imageUrl', item.imageUrl);
+          gallery.appendChild(galleryItem);
         }
       }.bind(this)
     );
