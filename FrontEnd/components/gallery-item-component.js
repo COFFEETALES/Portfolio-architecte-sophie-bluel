@@ -37,6 +37,7 @@ GalleryItemComponent.prototype.connectedCallback = (
 
     imgElement.src = htmlElement.getAttribute('imageUrl');
     imgElement.alt = htmlElement.getAttribute('title');
+
     this.figureElement.querySelector('figcaption').textContent = htmlElement.getAttribute('title');
   }
 );
@@ -54,27 +55,38 @@ GalleryItemComponent.constructor_ = (
     /** @const {!HTMLElement} */
     var htmlElement = this;
 
-    htmlElement.attachShadow({mode: 'open'});
+    /**
+     * @const {!ShadowRoot}
+     * @private
+     */
+    this.root_ = htmlElement.attachShadow({mode: 'closed'});
 
     /** @const {!HTMLObjectElement} */
-    var objectNode = Array.prototype.slice.call(
-      document.getElementsByTagName('object'), -1
-    )[0];
+    var objectNode = /** @type {!HTMLObjectElement} */(
+      getElement('sophie-bluel-xml')
+    );
 
     /** @const {!Document} */
     var contentDocument = /** @type {!Document} */(objectNode.contentDocument);
 
     /** @const {!Element} */
-    var galleryItemTemplate = /** @type {!Element} */(contentDocument.documentElement.firstElementChild);
+    var galleryItemTemplate = /** @type {!Element} */(
+      xpathEvaluate(
+        contentDocument,
+        '//bluel:gallery-item-template[1]',
+        contentDocument.documentElement,
+        XPathResult.FIRST_ORDERED_NODE_TYPE
+      ).singleNodeValue
+    );
 
-    htmlElement.shadowRoot.appendChild(
-      galleryItemTemplate.firstElementChild.cloneNode(true)
+    this.root_.appendChild(
+      galleryItemTemplate.firstElementChild.cloneNode(true) // <style/>
     );
 
     /** @const {!Node} */
     this.figureElement = (
-      htmlElement.shadowRoot.appendChild(
-        galleryItemTemplate.lastElementChild.cloneNode(true)
+      this.root_.appendChild(
+        galleryItemTemplate.lastElementChild.cloneNode(true) // <figure/>
       )
     );
   }

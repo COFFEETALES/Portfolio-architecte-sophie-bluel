@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<root>
-<!-- vim: set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab : -->
-    <GalleryItemComponent xmlns="http://www.w3.org/1999/xhtml">
-        <style type="text/css">
-            :host img {
-                width: 100%;
-            }
-        </style>
-        <figure><!--
-        --><img></img><!--
-        --><figcaption></figcaption><!--
-     --></figure>
-    </GalleryItemComponent>
+<root xmlns:bluel="http://www.sophie-bluel.com/ns">
+    <!-- vim: set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab : -->
+    <bluel:web-components xmlns="http://www.w3.org/1999/xhtml">
+        <bluel:gallery-item-template>
+            <style type="text/css">
+                :host img {
+                    width: 100%;
+                }
+            </style>
+            <figure><!--
+            --><img src="" alt=""/><!--
+            --><figcaption></figcaption><!--
+         --></figure>
+        </bluel:gallery-item-template>
+    </bluel:web-components>
 </root>
