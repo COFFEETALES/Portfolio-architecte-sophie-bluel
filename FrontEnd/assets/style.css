@@ -123,7 +123,6 @@ li:hover {
 }
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
 }
 .gallery {
 	width: 100%;
@@ -188,3 +187,20 @@ footer nav ul {
 	margin: 2em
 }
 
+#portfolio-category-catalogue {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	justify-content: center;
+	white-space: nowrap;
+	overflow-x: hidden;
+	height: 120px;
+	align-items: center;
+}
+
+#portfolio-category-catalogue > category-filter {
+	flex-basis: auto;
+	flex-grow: 0;
+	flex-shrink: 1;
+	overflow-x: hidden;
+}

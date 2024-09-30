@@ -13,5 +13,54 @@
             --><figcaption></figcaption><!--
          --></figure>
         </bluel:gallery-item-template>
+        <bluel:category-filter-template>
+            <style type="text/css">
+                :host {
+                    --cat-filter-background-color: #fff;
+                    --cat-filter-border-color: #1d6154;
+                    --cat-filter-checked-background-color: #1d6154;
+                    --cat-filter-checked-font-color: #fff;
+                    --cat-filter-font-color: #1d6154;
+                }
+                :host input[type="checkbox"] {
+                    appearance: none;
+                    background-color: var(--cat-filter-background-color);
+                    border-radius: 60px;
+                    border: 2px solid var(--cat-filter-border-color);
+                    cursor: pointer;
+                    display: block;
+                    font-family: 'Syne';
+                    font-size: 1.1em;
+                    font-weight: 700;
+                    line-height: 1.0;
+                    margin: 0;
+                    overflow-x: hidden;
+                    padding: 14px 30px;
+                    text-overflow: ellipsis;
+                    transition: background-color 0.3s;
+                    white-space: nowrap;
+                    width: 100%;
+                }
+                :host input[type="checkbox"]::after {
+                    color: var(--cat-filter-font-color);
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                }
+                :host input[type="checkbox"]:checked::after {
+                    color: var(--cat-filter-checked-font-color);
+                }
+                :host input[type="checkbox"]:hover::after {
+                    text-decoration: underline;
+                }
+                :host input[type="checkbox"]:checked {
+                    background-color: var(--cat-filter-checked-background-color);
+                }
+                :host input[type="checkbox"]::after {
+                    content: var(--cat-filter-label);
+                }
+            </style>
+            <input class="category-filter" type="checkbox" name=""/>
+        </bluel:category-filter-template>
     </bluel:web-components>
 </root>

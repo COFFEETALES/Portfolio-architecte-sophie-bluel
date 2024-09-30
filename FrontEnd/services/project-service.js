@@ -51,6 +51,39 @@ ProjectService.processJson_ = (
  * @return {
  *  !Promise<
  *   !Array<
+ *    !ProjectService_CategoryInterface
+ *   >
+ *  >
+ * }
+ */
+ProjectService.prototype.getCategories = (
+  function () {
+    return (
+      fetch(
+        HttpEndpoints.GET_CATEGORIES, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          //mode: 'no-cors',
+          credentials: 'same-origin',
+          cache: 'no-cache',
+          redirect: 'follow',
+          referrer: 'no-referrer',
+          referrerPolicy: 'no-referrer',
+          keepalive: false,
+        }
+      ).then(
+        function (response) {
+          return response.json();
+        }
+      )
+    );
+  }
+);
+
+/**
+ * @return {
+ *  !Promise<
+ *   !Array<
  *    !ProjectService_WorkInterface
  *   >
  *  >
