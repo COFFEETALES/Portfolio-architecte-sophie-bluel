@@ -4,16 +4,11 @@
 /**
  * @class
  * @constructor
- * @extends {HTMLElement}
+ * @extends {WebComponent}
  */
 var CategoryFilterComponent = (
   function () {
-    /** @const {!CategoryFilterComponent} */
-    var retVal = Reflect.construct(HTMLElement, [], CategoryFilterComponent);
-
-    CategoryFilterComponent.constructor_.call(retVal);
-
-    return retVal;
+    return WebComponent.make(CategoryFilterComponent, '//bluel:category-filter-template[1]');
   }
 );
 
@@ -37,22 +32,17 @@ CategoryFilterComponent.prototype.connectedCallback = (
     /** @const {!HTMLElement} */
     var htmlElement = this;
 
-    /** @const {!HTMLStyleElement} */
-    var styleElement = /** @type {!HTMLStyleElement} */(
-      this.root_.firstElementChild
-    );
-
     /** @const {!CSSStyleSheet} */
-    var styleSheet = /** @type {!CSSStyleSheet} */(styleElement.sheet);
+    var styleSheet = new CSSStyleSheet();
 
     /** @type {number} */
     var i = 0;
     /** @const {!Array<string>} */
     var arr = [
       [
-        ':host ',
+        ':host',
         '{',
-          '--cat-filter-label: \'', /** @type {string} */(
+          '--cat-filter-label:\'', /** @type {string} */(
             (function /** string */ foo (/** string */ str) {
               /** @const {number} */
               var len = str.length;
@@ -72,67 +62,33 @@ CategoryFilterComponent.prototype.connectedCallback = (
         '}',
       ].join('')
     ];
+
     /** @const {number} */
     var len = arr.length;
+
     /** @const {number} */
-    var startIdx = 0;//styleSheet.cssRules.length;
+    var startIdx = 0;
 
     do {
       styleSheet.insertRule(arr[i], startIdx + i);
     } while (++i !== len);
 
-    this.inputElement.onchange = this.onCheckboxChange.bind(this);
+    this.root_.adoptedStyleSheets.unshift(styleSheet);
+
+    /** @const {!HTMLInputElement} */
+    var checkboxElement = /** @type {!HTMLInputElement} */(
+      this.documentElement_
+    );
+
+    checkboxElement.onchange = this.onCheckboxChange.bind(this);
   }
 );
 
 /**
  * @this {CategoryFilterComponent}
- * @return {void}
- * @private
+ * @override
  */
-CategoryFilterComponent.constructor_ = (
+CategoryFilterComponent.prototype.processCreation = (
   function () {
-    // /** @type {!Object} */
-    // this.test1 = Object(1);
-
-    /** @const {!HTMLElement} */
-    var htmlElement = this;
-
-    /**
-     * @const {!ShadowRoot}
-     * @private
-     */
-    this.root_ = htmlElement.attachShadow({mode: 'closed'});
-
-    /** @const {!HTMLObjectElement} */
-    var objectNode = /** @type {!HTMLObjectElement} */(
-      getElement('sophie-bluel-xml')
-    );
-
-    /** @const {!Document} */
-    var contentDocument = /** @type {!Document} */(objectNode.contentDocument);
-
-    /** @const {!Element} */
-    var categoryFilterTemplate = /** @type {!Element} */(
-      xpathEvaluate(
-        contentDocument,
-        '//bluel:category-filter-template[1]',
-        contentDocument.documentElement,
-        XPathResult.FIRST_ORDERED_NODE_TYPE
-      ).singleNodeValue
-    );
-
-    this.root_.appendChild(
-      categoryFilterTemplate.firstElementChild.cloneNode(true)
-    );
-
-    /** @const {!HTMLInputElement} */
-    this.inputElement = (
-      /** @type {!HTMLInputElement} */(
-        this.root_.appendChild(
-          categoryFilterTemplate.lastElementChild.cloneNode(true)
-        )
-      )
-    );
   }
 );

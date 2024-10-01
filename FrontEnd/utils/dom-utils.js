@@ -46,3 +46,13 @@ var xpathEvaluate = function (doc, expr, elem, xpathResult) {
   );
 };
 
+/** @const {function(!Node, number): (!Node|void)} */
+var getChildNode = function(el, type) {
+	var /** !NodeList<!Node> */ nodes = el.childNodes;
+	var /** !Node */ node ;
+	for (var /** @type {number} */ i = 0, /** @const {number} */ n = nodes.length ; i !== n ; ++i) {
+		node = nodes[i];
+		if (type === node.nodeType) { return /** @type{!Element|undefined} */(node); }
+	}
+};
+

@@ -3,18 +3,21 @@
     <!-- vim: set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab : -->
     <bluel:web-components xmlns="http://www.w3.org/1999/xhtml">
         <bluel:gallery-item-template>
-            <style type="text/css">
+            <bluel:custom-style>
+              <![CDATA[
                 :host img {
                     width: 100%;
                 }
-            </style>
+              ]]>
+            </bluel:custom-style>
             <figure><!--
             --><img src="" alt=""/><!--
             --><figcaption></figcaption><!--
          --></figure>
         </bluel:gallery-item-template>
         <bluel:category-filter-template>
-            <style type="text/css">
+            <bluel:custom-style>
+              <![CDATA[
                 :host {
                     --cat-filter-background-color: #fff;
                     --cat-filter-border-color: #1d6154;
@@ -59,7 +62,8 @@
                 :host input[type="checkbox"]::after {
                     content: var(--cat-filter-label);
                 }
-            </style>
+              ]]>
+            </bluel:custom-style>
             <input class="category-filter" type="checkbox" name=""/>
         </bluel:category-filter-template>
     </bluel:web-components>

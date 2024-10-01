@@ -37,7 +37,7 @@ var SophieBluel = (
     /** @const {!CategoryCatalogueComponent} */
     this.categoryCatalogue = CategoryCatalogueComponent.getInstance();
     /** @const {!GalleryComponent} */
-    this.gallery = new GalleryComponent;
+    this.gallery = GalleryComponent.getInstance();
 
     this.categoryCatalogue.loadCategories();
     this.gallery.loadGallery();

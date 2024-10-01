@@ -58,3 +58,18 @@ GalleryComponent.prototype.loadGallery = (
     );
   }
 );
+
+/**
+ * @type {!GalleryComponent|void}
+ * @private
+ */
+GalleryComponent.instance_;
+
+/**
+ * @return {!GalleryComponent}
+ */
+GalleryComponent.getInstance = (
+  function () {
+    return GalleryComponent.instance_ || (GalleryComponent.instance_ = new GalleryComponent);
+  }
+);

@@ -8,16 +8,11 @@
 /**
  * @class
  * @constructor
- * @extends {HTMLElement}
+ * @extends {WebComponent}
  */
 var GalleryItemComponent = (
   function () {
-    /** @const {!GalleryItemComponent} */
-    var retVal = Reflect.construct(HTMLElement, [], GalleryItemComponent);
-
-    GalleryItemComponent.constructor_.call(retVal);
-
-    return retVal;
+    return WebComponent.make(GalleryItemComponent, '//bluel:gallery-item-template[1]');
   }
 );
 
@@ -33,62 +28,23 @@ GalleryItemComponent.prototype.connectedCallback = (
     var htmlElement = this;
 
     /** @const {!HTMLImageElement} */
-    var imgElement = /** @type {!HTMLImageElement} */(this.figureElement.querySelector('img'));
+    var imgElement = /** @type {!HTMLImageElement} */(this.documentElement_.querySelector('img'));
 
     imgElement.src = htmlElement.getAttribute('imageUrl');
     imgElement.alt = htmlElement.getAttribute('title');
 
-    this.figureElement.querySelector('figcaption').textContent = htmlElement.getAttribute('title');
+    this.documentElement_.querySelector('figcaption').textContent = htmlElement.getAttribute('title');
   }
 );
 
 /**
  * @this {GalleryItemComponent}
- * @return {void}
- * @private
+ * @override
  */
-GalleryItemComponent.constructor_ = (
+GalleryItemComponent.prototype.processCreation = (
   function () {
     // /** @type {!Object} */
     // this.test1 = Object(1);
-
-    /** @const {!HTMLElement} */
-    var htmlElement = this;
-
-    /**
-     * @const {!ShadowRoot}
-     * @private
-     */
-    this.root_ = htmlElement.attachShadow({mode: 'closed'});
-
-    /** @const {!HTMLObjectElement} */
-    var objectNode = /** @type {!HTMLObjectElement} */(
-      getElement('sophie-bluel-xml')
-    );
-
-    /** @const {!Document} */
-    var contentDocument = /** @type {!Document} */(objectNode.contentDocument);
-
-    /** @const {!Element} */
-    var galleryItemTemplate = /** @type {!Element} */(
-      xpathEvaluate(
-        contentDocument,
-        '//bluel:gallery-item-template[1]',
-        contentDocument.documentElement,
-        XPathResult.FIRST_ORDERED_NODE_TYPE
-      ).singleNodeValue
-    );
-
-    this.root_.appendChild(
-      galleryItemTemplate.firstElementChild.cloneNode(true) // <style/>
-    );
-
-    /** @const {!Node} */
-    this.figureElement = (
-      this.root_.appendChild(
-        galleryItemTemplate.lastElementChild.cloneNode(true) // <figure/>
-      )
-    );
   }
 );
 
