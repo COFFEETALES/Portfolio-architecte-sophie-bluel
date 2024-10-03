@@ -34,12 +34,10 @@ var SophieBluel = (
     Utils.me_().customElements.define('gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent));
     Utils.me_().customElements.define('category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent));
 
-    /** @const {!Containers.CategoryCatalogueContainer} */
-    var categoryCatalogue = Containers.CategoryCatalogueContainer.getInstance();
     /** @const {!Containers.GalleryContainer} */
     var gallery = Containers.GalleryContainer.getInstance();
 
-    categoryCatalogue.loadCategories();
+    gallery.loadCategories();
     gallery.loadGallery();
   }
 );

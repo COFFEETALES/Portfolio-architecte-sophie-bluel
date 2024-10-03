@@ -20,6 +20,11 @@ WebComponents.GalleryItemComponent = (
 WebComponents.GalleryItemComponent.prototype = Object.create(HTMLElement.prototype);
 
 /**
+ * @type {number}
+ */
+WebComponents.GalleryItemComponent.prototype.itemCategoryId = -1;
+
+/**
  * @override
  * @return {void}
  */
@@ -28,13 +33,15 @@ WebComponents.GalleryItemComponent.prototype.connectedCallback = (
     /** @const {!HTMLElement} */
     var htmlElement = this;
 
+    this.itemCategoryId = Number(htmlElement.getAttribute('galleryItemCategoryId'));
+
     /** @const {!HTMLImageElement} */
     var imgElement = /** @type {!HTMLImageElement} */(this.documentElement_.querySelector('img'));
 
-    imgElement.src = htmlElement.getAttribute('imageUrl');
-    imgElement.alt = htmlElement.getAttribute('title');
+    imgElement.src = htmlElement.getAttribute('galleryItemImageUrl');
+    imgElement.alt = htmlElement.getAttribute('galleryItemTitle');
 
-    this.documentElement_.querySelector('figcaption').textContent = htmlElement.getAttribute('title');
+    this.documentElement_.querySelector('figcaption').textContent = htmlElement.getAttribute('galleryItemTitle');
   }
 );
 
