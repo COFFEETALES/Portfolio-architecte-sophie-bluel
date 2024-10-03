@@ -5,47 +5,46 @@
  * @abstract
  * @constructor
  * @extends {HTMLElement}
+ * @private
  */
-var WebComponent = (
+Utils.WebComponent = (
   function () {}
 );
 
 
-/**
- * @return {void}
- */
-WebComponent.prototype.processCreation = (
-  function () {}
-);
+// /**
+//  * @return {void}
+//  */
+// Utils.WebComponent.prototype.processCreation = (
+//   function () {}
+// );
 
 /**
  * @const {!ShadowRoot}
  * @protected
  */
-WebComponent.prototype.root_;
+Utils.WebComponent.prototype.root_;
 
 /**
  * @const {!Node}
  * @protected
  */
-WebComponent.prototype.documentElement_;
+Utils.WebComponent.prototype.documentElement_;
 
 /**
  * @type {!CSSStyleSheet|void}
  */
-WebComponent.styleSheet_;
+Utils.WebComponent.styleSheet_;
 
 /**
- * @param {typeof WebComponent} ComponentClass
+ * @param {typeof Utils.WebComponent} ComponentClass
  * @param {string} xpathExpr
- * @return {!WebComponent}
+ * @return {!Utils.WebComponent}
  */
-WebComponent.make = (
+Utils.WebComponent.make = (
   function (ComponentClass, xpathExpr) {
-    /** @const {!WebComponent} */
+    /** @const {!Utils.WebComponent} */
     var retVal = Reflect.construct(HTMLElement, [], ComponentClass);
-
-    retVal.processCreation();
 
     /** @const {!HTMLElement} */
     var htmlElement = retVal;
@@ -55,7 +54,7 @@ WebComponent.make = (
 
     /** @const {!HTMLObjectElement} */
     var objectNode = /** @type {!HTMLObjectElement} */(
-      getElement('sophie-bluel-xml')
+      Utils.getElement('sophie-bluel-xml')
     );
 
     /** @const {!Document} */
@@ -65,7 +64,7 @@ WebComponent.make = (
 
     /** @const {!Element} */
     var webCompTemplate = /** @type {!Element} */(
-      xpathEvaluate(
+      Utils.xpathEvaluate(
         contentDocument,
         xpathExpr,
         contentDocument.documentElement,
@@ -78,7 +77,7 @@ WebComponent.make = (
       var customStyle = /** @type {!HTMLScriptElement} */(webCompTemplate.firstElementChild);
 
       /** @const {!CDATASection} */
-      var textNode = /** @type {!CDATASection} */(getChildNode(customStyle, Node.CDATA_SECTION_NODE));
+      var textNode = /** @type {!CDATASection} */(Utils.getChildNode(customStyle, Node.CDATA_SECTION_NODE));
 
       /** @type {string} */
       var str = textNode.data;

@@ -8,21 +8,22 @@
 /**
  * @class
  * @constructor
- * @extends {WebComponent}
+ * @extends {Utils.WebComponent}
+ * @private
  */
-var GalleryItemComponent = (
+WebComponents.GalleryItemComponent = (
   function () {
-    return WebComponent.make(GalleryItemComponent, '//bluel:gallery-item-template[1]');
+    return Utils.WebComponent.make(WebComponents.GalleryItemComponent, '//bluel:gallery-item-template[1]');
   }
 );
 
-GalleryItemComponent.prototype = Object.create(HTMLElement.prototype);
+WebComponents.GalleryItemComponent.prototype = Object.create(HTMLElement.prototype);
 
 /**
  * @override
  * @return {void}
  */
-GalleryItemComponent.prototype.connectedCallback = (
+WebComponents.GalleryItemComponent.prototype.connectedCallback = (
   function () {
     /** @const {!HTMLElement} */
     var htmlElement = this;
@@ -37,23 +38,23 @@ GalleryItemComponent.prototype.connectedCallback = (
   }
 );
 
-/**
- * @this {GalleryItemComponent}
- * @override
- */
-GalleryItemComponent.prototype.processCreation = (
-  function () {
-    // /** @type {!Object} */
-    // this.test1 = Object(1);
-  }
-);
-
 // /**
-//  * @type {number}
+//  * @this {WebComponents.GalleryItemComponent}
+//  * @override
 //  */
-// GalleryItemComponent.prototype.test = 1;
+// WebComponents.GalleryItemComponent.prototype.processCreation = (
+//   function () {
+//     // /** @type {!Object} */
+//     // this.test1 = Object(1);
+//   }
+// );
 //
 // /**
 //  * @type {number}
 //  */
-// GalleryItemComponent.prototype.test2 = Object(2);
+// WebComponents.GalleryItemComponent.prototype.test = 1;
+//
+// /**
+//  * @type {number}
+//  */
+// WebComponents.GalleryItemComponent.prototype.test2 = Object(2);

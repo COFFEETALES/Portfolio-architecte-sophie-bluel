@@ -2,19 +2,19 @@
 'use strict';
 
 /** @const {function():!Window} */
-var me_ = function () { return /** @type {!Window} */(self); };
+Utils.me_ = function () { return /** @type {!Window} */(self); };
 
 /** @const {function():void} */
-var nullFunction = function () {};
+Utils.nullFunction = function () {};
 
 /** @const {function(string):!Element} */
-var getElement = function (str) {
+Utils.getElement = function (str) {
   var /** !Element */ el = /** @type{!Element} */(document.getElementById(str));
   return el;
 };
 
 /** @const {function(!Document, string, !Element, number): !XPathResult} */
-var xpathEvaluate = function (doc, expr, elem, xpathResult) {
+Utils.xpathEvaluate = function (doc, expr, elem, xpathResult) {
   /** @const {
         function(
           this: Document,
@@ -47,7 +47,7 @@ var xpathEvaluate = function (doc, expr, elem, xpathResult) {
 };
 
 /** @const {function(!Node, number): (!Node|void)} */
-var getChildNode = function(el, type) {
+Utils.getChildNode = function(el, type) {
 	var /** !NodeList<!Node> */ nodes = el.childNodes;
 	var /** !Node */ node ;
 	for (var /** @type {number} */ i = 0, /** @const {number} */ n = nodes.length ; i !== n ; ++i) {

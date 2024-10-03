@@ -31,16 +31,16 @@ var HttpEndpoints = {
  */
 var SophieBluel = (
   function () {
-    me_().customElements.define('gallery-item', /** @type {function(new:HTMLElement)} */(GalleryItemComponent));
-    me_().customElements.define('category-filter', /** @type {function(new:HTMLElement)} */(CategoryFilterComponent));
+    Utils.me_().customElements.define('gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent));
+    Utils.me_().customElements.define('category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent));
 
-    /** @const {!CategoryCatalogueComponent} */
-    this.categoryCatalogue = CategoryCatalogueComponent.getInstance();
-    /** @const {!GalleryComponent} */
-    this.gallery = GalleryComponent.getInstance();
+    /** @const {!Containers.CategoryCatalogueContainer} */
+    var categoryCatalogue = Containers.CategoryCatalogueContainer.getInstance();
+    /** @const {!Containers.GalleryContainer} */
+    var gallery = Containers.GalleryContainer.getInstance();
 
-    this.categoryCatalogue.loadCategories();
-    this.gallery.loadGallery();
+    categoryCatalogue.loadCategories();
+    gallery.loadGallery();
   }
 );
 

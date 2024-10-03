@@ -4,20 +4,21 @@
 /**
  * @class
  * @constructor
- * @extends {WebComponent}
+ * @extends {Utils.WebComponent}
+ * @private
  */
-var CategoryFilterComponent = (
+WebComponents.CategoryFilterComponent = (
   function () {
-    return WebComponent.make(CategoryFilterComponent, '//bluel:category-filter-template[1]');
+    return Utils.WebComponent.make(WebComponents.CategoryFilterComponent, '//bluel:category-filter-template[1]');
   }
 );
 
-CategoryFilterComponent.prototype = Object.create(HTMLElement.prototype);
+WebComponents.CategoryFilterComponent.prototype = Object.create(HTMLElement.prototype);
 
 /**
  * @return {void}
  */
-CategoryFilterComponent.prototype.onCheckboxChange = (
+WebComponents.CategoryFilterComponent.prototype.onCheckboxChange = (
   function () {
     console.log('onCheckboxChange', this);
   }
@@ -27,7 +28,7 @@ CategoryFilterComponent.prototype.onCheckboxChange = (
  * @override
  * @return {void}
  */
-CategoryFilterComponent.prototype.connectedCallback = (
+WebComponents.CategoryFilterComponent.prototype.connectedCallback = (
   function () {
     /** @const {!HTMLElement} */
     var htmlElement = this;
@@ -81,14 +82,5 @@ CategoryFilterComponent.prototype.connectedCallback = (
     );
 
     checkboxElement.onchange = this.onCheckboxChange.bind(this);
-  }
-);
-
-/**
- * @this {CategoryFilterComponent}
- * @override
- */
-CategoryFilterComponent.prototype.processCreation = (
-  function () {
   }
 );

@@ -4,20 +4,21 @@
 /**
  * @class
  * @constructor
+ * @private
  */
-var GalleryComponent = (
+Containers.GalleryContainer = (
   function () {
     /**
-     * @const {!ProjectService}
+     * @const {!Services.ProjectService}
      */
-    this.projectService = ProjectService.getInstance();
+    this.projectService = Services.ProjectService.getInstance();
   }
 );
 
 /**
  * @return {void}
  */
-GalleryComponent.prototype.loadGallery = (
+Containers.GalleryContainer.prototype.loadGallery = (
   function () {
     /** @const {!Promise<!Array<!ProjectService_WorkInterface>>} */
     var p1 = this.projectService.getProjects();
@@ -29,7 +30,7 @@ GalleryComponent.prototype.loadGallery = (
         //console.log('this.projectService', this.projectService.getProjectCount());
 
         /** @const {!Element} */
-        var gallery = getElement('portfolio-gallery');
+        var gallery = Utils.getElement('portfolio-gallery');
 
         for (var /** number */ i = 0, /** number */ length = arg1.length ; i !== length ; ++i) {
           /**
@@ -60,16 +61,16 @@ GalleryComponent.prototype.loadGallery = (
 );
 
 /**
- * @type {!GalleryComponent|void}
+ * @type {!Containers.GalleryContainer|void}
  * @private
  */
-GalleryComponent.instance_;
+Containers.GalleryContainer.instance_;
 
 /**
- * @return {!GalleryComponent}
+ * @return {!Containers.GalleryContainer}
  */
-GalleryComponent.getInstance = (
+Containers.GalleryContainer.getInstance = (
   function () {
-    return GalleryComponent.instance_ || (GalleryComponent.instance_ = new GalleryComponent);
+    return Containers.GalleryContainer.instance_ || (Containers.GalleryContainer.instance_ = new Containers.GalleryContainer);
   }
 );

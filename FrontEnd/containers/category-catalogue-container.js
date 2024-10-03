@@ -4,20 +4,21 @@
 /**
  * @class
  * @constructor
+ * @private
  */
-var CategoryCatalogueComponent = (
+Containers.CategoryCatalogueContainer = (
   function () {
     /**
-     * @const {!ProjectService}
+     * @const {!Services.ProjectService}
      */
-    this.projectService = ProjectService.getInstance();
+    this.projectService = Services.ProjectService.getInstance();
   }
 );
 
 /**
  * @return {void}
  */
-CategoryCatalogueComponent.prototype.loadCategories = (
+Containers.CategoryCatalogueContainer.prototype.loadCategories = (
   function () {
     /** @const {!Promise<!Array<!ProjectService_CategoryInterface>>} */
     var p1 = this.projectService.getCategories();
@@ -29,7 +30,7 @@ CategoryCatalogueComponent.prototype.loadCategories = (
         //console.log('this.projectService', this.projectService.getProjectCount());
 
         /** @const {!Element} */
-        var categoryCatalogue = getElement('portfolio-category-catalogue');
+        var categoryCatalogue = Utils.getElement('portfolio-category-catalogue');
 
         arg1.unshift(
           /** @type {!ProjectService_CategoryInterface} */(
@@ -57,16 +58,16 @@ CategoryCatalogueComponent.prototype.loadCategories = (
 );
 
 /**
- * @type {!CategoryCatalogueComponent|void}
+ * @type {!Containers.CategoryCatalogueContainer|void}
  * @private
  */
-CategoryCatalogueComponent.instance_;
+Containers.CategoryCatalogueContainer.instance_;
 
 /**
- * @return {!CategoryCatalogueComponent}
+ * @return {!Containers.CategoryCatalogueContainer}
  */
-CategoryCatalogueComponent.getInstance = (
+Containers.CategoryCatalogueContainer.getInstance = (
   function () {
-    return CategoryCatalogueComponent.instance_ || (CategoryCatalogueComponent.instance_ = new CategoryCatalogueComponent);
+    return Containers.CategoryCatalogueContainer.instance_ || (Containers.CategoryCatalogueContainer.instance_ = new Containers.CategoryCatalogueContainer);
   }
 );

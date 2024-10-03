@@ -6,7 +6,7 @@
  * @constructor
  * @private
  */
-var ProjectService = (
+Services.ProjectService = (
   function () {
   }
 );
@@ -16,19 +16,19 @@ var ProjectService = (
  * @type {number}
  * @private
  */
-ProjectService.prototype.numProjects_ = 0;
+Services.ProjectService.prototype.numProjects_ = 0;
 
 /**
  * @return {number}
  */
-ProjectService.prototype.getProjectCount = (
+Services.ProjectService.prototype.getProjectCount = (
   function () {
     return this.numProjects_;
   }
 );
 
 /**
- * @this {!ProjectService}
+ * @this {!Services.ProjectService}
  * @param {!Array<!ProjectService_WorkInterface>} arg1
  * @return {
  *  !Array<
@@ -37,7 +37,7 @@ ProjectService.prototype.getProjectCount = (
  * }
  * @private
  */
-ProjectService.processJson_ = (
+Services.ProjectService.processJson_ = (
   function (arg1) {
     if (!Array.isArray(arg1)) {
       throw Error('');
@@ -56,7 +56,7 @@ ProjectService.processJson_ = (
  *  >
  * }
  */
-ProjectService.prototype.getCategories = (
+Services.ProjectService.prototype.getCategories = (
   function () {
     return (
       fetch(
@@ -89,7 +89,7 @@ ProjectService.prototype.getCategories = (
  *  >
  * }
  */
-ProjectService.prototype.getProjects = (
+Services.ProjectService.prototype.getProjects = (
   function () {
     return (
       fetch(
@@ -109,7 +109,7 @@ ProjectService.prototype.getProjects = (
           return response.json();
         }
       ).then(
-        ProjectService.processJson_.bind(this)
+        Services.ProjectService.processJson_.bind(this)
       )
     );
 //    /**
@@ -124,16 +124,16 @@ ProjectService.prototype.getProjects = (
 );
 
 /**
- * @type {!ProjectService|void}
+ * @type {!Services.ProjectService|void}
  * @private
  */
-ProjectService.instance_;
+Services.ProjectService.instance_;
 
 /**
- * @return {!ProjectService}
+ * @return {!Services.ProjectService}
  */
-ProjectService.getInstance = (
+Services.ProjectService.getInstance = (
   function () {
-    return ProjectService.instance_ || (ProjectService.instance_ = new ProjectService);
+    return Services.ProjectService.instance_ || (Services.ProjectService.instance_ = new Services.ProjectService);
   }
 );
