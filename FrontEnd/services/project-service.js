@@ -8,6 +8,8 @@
  */
 Services.ProjectService = (
   function () {
+    /** @const {!Services.ApiService} */
+    this.apiService = Services.ApiService.getInstance();
   }
 );
 
@@ -59,19 +61,7 @@ Services.ProjectService.processJson_ = (
 Services.ProjectService.prototype.getCategories = (
   function () {
     return (
-      fetch(
-        HttpEndpoints.GET_CATEGORIES, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          //mode: 'no-cors',
-          credentials: 'same-origin',
-          cache: 'no-cache',
-          redirect: 'follow',
-          referrer: 'no-referrer',
-          referrerPolicy: 'no-referrer',
-          keepalive: false,
-        }
-      ).then(
+      (this.apiService.request('GET', HttpEndpoints.GET_CATEGORIES)).then(
         function (response) {
           return response.json();
         }
@@ -92,19 +82,7 @@ Services.ProjectService.prototype.getCategories = (
 Services.ProjectService.prototype.getProjects = (
   function () {
     return (
-      fetch(
-        HttpEndpoints.GET_WORKS, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          //mode: 'no-cors',
-          credentials: 'same-origin',
-          cache: 'no-cache',
-          redirect: 'follow',
-          referrer: 'no-referrer',
-          referrerPolicy: 'no-referrer',
-          keepalive: false,
-        }
-      ).then(
+      (this.apiService.request('GET', HttpEndpoints.GET_WORKS)).then(
         function (response) {
           return response.json();
         }

@@ -198,6 +198,10 @@ input[type="submit"]{
 	text-align: center;
 	width: 180px;
 }
+input[type="submit"][disabled="true"]{
+	cursor: auto;
+	background-color: #ddd;
+}
 
 footer nav ul {
 	display: flex;

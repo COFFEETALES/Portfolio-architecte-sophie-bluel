@@ -15,6 +15,7 @@
 	<script type="application/javascript" src="sophie-bluel-header.js" charset="UTF-8"></script>
 	<script type="application/javascript" src="utils/dom-utils.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="utils/web-component.js" charset="UTF-8" defer></script>
+	<script type="application/javascript" src="services/api-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/auth-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/project-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="web-components/category-filter-component.js" charset="UTF-8" defer></script>
@@ -53,16 +54,16 @@
 	</section>
 	<section id="login" style="display: none">
 		<h2>Login</h2>
-		<form action="#" onsubmit="event.preventDefault();" id="form-login">
+		<form action="#" autocomplete="off" id="form-login" onsubmit="event.preventDefault();">
 			<div>
 				<label for="email">E-mail</label>
-				<input type="email" name="email" id="email" autocomplete="off"/>
+				<input autocomplete="off" id="login-email" name="login-email" required type="email" value="joffrey.romero@outlook.com"/>
 			</div>
 			<div>
 				<label for="password">Mot de passe</label>
-				<input type="password" name="password" id="password" autocomplete="off"/>
+				<input autocomplete="off" id="login-password" name="login-password" required type="password" value="P@ssWord"/>
 			</div>
-			<input type="submit" value="Se connecter" />
+			<input id="login-submit" type="submit" value="Se connecter"/>
 			<a href="#" onclick="event.preventDefault();">Mot de passe oublié ?</a>
 		</form>
 	</section>
