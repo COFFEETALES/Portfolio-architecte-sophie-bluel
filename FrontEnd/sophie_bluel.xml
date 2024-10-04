@@ -5,6 +5,17 @@
         <bluel:gallery-item-template>
             <bluel:custom-style>
               <![CDATA[
+                :host figcaption, :host figure, :host img {
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                    font-size: 100%;
+                    font: inherit;
+                    vertical-align: baseline;
+                }
+                :host figcaption, :host figure {
+                    display: block;
+                }
                 :host img {
                     width: 100%;
                 }
