@@ -31,6 +31,15 @@ var HttpEndpoints = {
  */
 var SophieBluel = (
   function () {
+
+    /** @const {!HTMLElement} */
+    var nav = /** @type {!HTMLElement} */(Utils.getElement('header-navigation-bar'));
+    nav.onclick = SophieBluel.onNavClick_.bind(this);
+
+    /** @const {!HTMLFormElement} */
+    var loginForm = /** @type {!HTMLFormElement} */(Utils.getElement('form-login'));
+    loginForm.onsubmit = SophieBluel.onLoginSumbit_.bind(this);
+
     Utils.me_().customElements.define('gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent));
     Utils.me_().customElements.define('category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent));
 
@@ -41,6 +50,69 @@ var SophieBluel = (
     gallery.loadGallery();
   }
 );
+
+/**
+ * @this {!SophieBluel}
+ * below is optional param
+ * @param {?Event=} event
+ * @return {void}
+ * @private
+ */
+SophieBluel.onLoginSumbit_ = function (event) {
+  if (!event) {
+    return;
+  }
+
+  event.preventDefault();
+};
+
+/**
+ * @this {!SophieBluel}
+ * @param {?Event} event
+ * @return {void}
+ * @private
+ */
+SophieBluel.onNavClick_ = function (event) {
+  if (!event) {
+    return;
+  }
+
+  event.stopImmediatePropagation();
+
+  if (event.target instanceof HTMLAnchorElement) {
+    /**
+     * @const {!HTMLAnchorElement}
+     */
+    var anchor = /** @type {!HTMLAnchorElement} */(event.target);
+
+    /**
+     * @const {string|void}
+     */
+    var viewNames = anchor.dataset['viewNames'];
+
+    if (viewNames) {
+      // switchView
+
+      /**
+       * @const {!Array<string>}
+       */
+      var views = ['login', 'portfolio', 'contact'];
+
+      for (var /** @type {number} */ i = 0, /** @type {number} */ n = views.length ; i !== n ; ++i) {
+        Utils.getElement(views[i]).style.display = 'none';
+      }
+
+      /**
+       * @const {!Array<string>}
+       */
+      var targetViews = viewNames.split(/,\s*/);
+
+      for (i = 0, n = targetViews.length ; i !== n ; ++i) {
+        Utils.getElement(targetViews[i]).style.display = 'block';
+      }
+    }
+  }
+};
 
 window.onload = /** @const {function(Event?):void|null} */ (
   function (event) {

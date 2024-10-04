@@ -1,6 +1,6 @@
 /* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
+	v2.0 | 20110126
+	License: none (public domain)
 */
 
 html, body, div, span, applet, object, iframe,
@@ -45,6 +45,9 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+html, body {
+	background-color: #FFFEF8;
 }
 /** end reset css**/
 body {
@@ -95,6 +98,13 @@ nav li {
 	font-size: 1.2em;
 }
 
+nav a,
+nav a:link,
+nav a:visited,
+nav a:hover {
+	text-decoration: none;
+	color: inherit;
+}
 li:hover {
 	color: #B1663C;
 }
@@ -121,6 +131,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+#login h2,
 #portfolio h2 {
 	text-align: center;
 }
@@ -138,17 +149,21 @@ li:hover {
 
 }
 */
+#login,
 #contact {
 	width: 50%;
 margin: auto;
 }
+#login > *,
 #contact > * {
 	text-align: center;
 
 }
-#contact h2{
+#login h2,
+#contact h2 {
 	margin-bottom: 20px;
 }
+#login form,
 #contact form {
 	text-align: left;
 	margin-top:30px;
@@ -156,12 +171,14 @@ margin: auto;
 	flex-direction: column;
 }
 
+#login input,
 #contact input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+#login label,
 #contact label {
 	margin: 2em 0 1em 0;
 }
@@ -171,14 +188,15 @@ margin: auto;
 }
 
 input[type="submit"]{
+	background-color: #1D6154;
+	border-radius: 60px ;
+	color: white;
+	cursor: pointer;
 	font-family: 'Syne';
 	font-weight: 700;
-	color: white;
-	background-color: #1D6154;
 	margin : 2em auto ;
-	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
+	width: 180px;
 }
 
 footer nav ul {
@@ -203,4 +221,26 @@ footer nav ul {
 	flex-grow: 0;
 	flex-shrink: 1;
 	overflow-x: hidden;
+}
+
+
+#login > form {
+	margin-top: 0;
+}
+#login > form > div {
+	display: flex;
+	flex-direction: column;
+}
+#login > form > a {
+	align-self: center;
+	font-size: 1.2em;
+}
+#login > form > a,
+#login > form > a:link,
+#login > form > a:visited {
+	color: #000;
+	text-decoration: none;
+}
+#login > form > a:hover {
+	color: #B1663C;
 }

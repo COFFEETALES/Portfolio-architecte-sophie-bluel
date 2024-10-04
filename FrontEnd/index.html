@@ -30,11 +30,11 @@
 <body>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
+	<nav id="header-navigation-bar">
 		<ul>
-			<li>projets</li>
+			<li><a href="#" onclick="event.preventDefault();" id="anchor-projects" data-view-names="portfolio, contact">projets</a></li>
 			<li>contact</li>
-			<li>login</li>
+			<li><a href="#" onclick="event.preventDefault();" id="anchor-login" data-view-names="login">login</a></li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -50,6 +50,21 @@
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
+	</section>
+	<section id="login" style="display: none">
+		<h2>Login</h2>
+		<form action="#" onsubmit="event.preventDefault();" id="form-login">
+			<div>
+				<label for="email">E-mail</label>
+				<input type="email" name="email" id="email" autocomplete="off"/>
+			</div>
+			<div>
+				<label for="password">Mot de passe</label>
+				<input type="password" name="password" id="password" autocomplete="off"/>
+			</div>
+			<input type="submit" value="Se connecter" />
+			<a href="#" onclick="event.preventDefault();">Mot de passe oublié ?</a>
+		</form>
 	</section>
 	<section id="portfolio">
 		<h2>Mes Projets</h2>
