@@ -33,6 +33,9 @@ var HttpEndpoints = {
  */
 var SophieBluel = (
   function () {
+    /** @const {!Services.RouterService} */
+    this.routerService = Services.RouterService.getInstance();
+
     /** @const {!Services.ApiService} */
     this.apiService = Services.ApiService.getInstance();
 
@@ -51,10 +54,10 @@ var SophieBluel = (
     var gallery = Containers.GalleryContainer.getInstance();
 
     /** @const {!HTMLAnchorElement} */
-    var logingLink = /** @type {!HTMLAnchorElement} */(
+    var loginLink = /** @type {!HTMLAnchorElement} */(
       Utils.getElement('anchor-login')
     );
-    logingLink.onclick = SophieBluel.onNavLoginClick_.bind(this);
+    loginLink.onclick = SophieBluel.onNavLoginClick_.bind(this);
 
     gallery.loadCategories();
     gallery.loadGallery();
@@ -63,7 +66,6 @@ var SophieBluel = (
 
 /**
  * @this {!SophieBluel}
- * below is optional param
  * @param {?Event=} event
  * @return {void}
  * @private
@@ -74,9 +76,22 @@ SophieBluel.onNavLoginClick_ = function (event) {
   }
 
   if (this.apiService.isLoggedIn()) {
-    event.currentTarget.textContent = 'Login';
-    this.apiService.logout();
+    event.preventDefault();
     event.stopPropagation();
+
+    /** @const {!HTMLAnchorElement} */
+    var loginLink = /** @type {!HTMLAnchorElement} */(
+      event.currentTarget
+    );
+    loginLink.textContent = 'Login';
+
+    this.apiService.logout();
+
+    /** @const {!HTMLAnchorElement} */
+    var portfolioLink = /** @type {!HTMLAnchorElement} */(
+      Utils.getElement('anchor-projects')
+    );
+    portfolioLink.click();
   }
 };
 
@@ -118,14 +133,13 @@ SophieBluel.onLoginSumbit_ = function (event) {
       var portfolioLink = /** @type {!HTMLAnchorElement} */(
         Utils.getElement('anchor-projects')
       );
-
       portfolioLink.click();
 
       /** @const {!HTMLAnchorElement} */
-      var logingLink = /** @type {!HTMLAnchorElement} */(
+      var loginLink = /** @type {!HTMLAnchorElement} */(
         Utils.getElement('anchor-login')
       );
-      logingLink.textContent = 'Logout';
+      loginLink.textContent = 'Logout';
     }
   ).catch(
     function (error) {
@@ -148,9 +162,10 @@ SophieBluel.onNavClick_ = function (event) {
     return;
   }
 
-  event.stopImmediatePropagation();
-
   if (event.target instanceof HTMLAnchorElement) {
+    event.preventDefault();
+    event.stopPropagation();
+
     /**
      * @const {!HTMLAnchorElement}
      */
@@ -161,35 +176,7 @@ SophieBluel.onNavClick_ = function (event) {
      */
     var viewNames = anchor.dataset['viewNames'];
 
-    if (viewNames) {
-      // switchView
-
-      /**
-       * @const {!Array<string>}
-       */
-      var views = ['login', 'portfolio', 'contact'];
-
-      for (var /** @type {number} */ i = 0, /** @type {number} */ n = views.length ; i !== n ; ++i) {
-        Utils.getElement(views[i]).style.display = 'none';
-      }
-
-      /**
-       * @const {!Array<string>}
-       */
-      var targetViews = viewNames.split(/,\s*/);
-
-      for (i = 0, n = targetViews.length ; i !== n ; ++i) {
-        Utils.getElement(targetViews[i]).style.display = '';
-
-        if ('login' === targetViews[i]) {
-          /** @const {!HTMLInputElement} */
-          var submitButton = /** @type {!HTMLInputElement} */(
-            Utils.getElement('login-submit')
-          );
-          submitButton.removeAttribute('disabled');
-        }
-      }
-    }
+    this.routerService.navigate(viewNames || '');
   }
 };
 

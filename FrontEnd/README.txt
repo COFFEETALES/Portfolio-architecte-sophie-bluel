@@ -1,5 +1,5 @@
 
-Script bash ayant pour but d'ajouter simplement un utilisateur dans la base;
+# Script bash ayant pour but d'ajouter simplement un utilisateur dans la base;
 
 # apt install apache2-utils
 
