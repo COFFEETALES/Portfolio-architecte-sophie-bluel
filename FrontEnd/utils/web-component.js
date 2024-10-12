@@ -32,7 +32,7 @@ Utils.WebComponent.prototype.root_;
 Utils.WebComponent.prototype.documentElement_;
 
 /**
- * @type {!CSSStyleSheet|void}
+ * @type {!CSSStyleSheet|null|void}
  */
 Utils.WebComponent.styleSheet_;
 
@@ -72,7 +72,7 @@ Utils.WebComponent.make = (
       ).singleNodeValue
     );
 
-    if (!ComponentClass.styleSheet_) {
+    if (!ComponentClass.styleSheet_) n1: {
       /** @const {!HTMLScriptElement} */
       var customStyle = /** @type {!HTMLScriptElement} */(webCompTemplate.firstElementChild);
 
@@ -82,11 +82,43 @@ Utils.WebComponent.make = (
       /** @type {string} */
       var str = textNode.data;
 
-      ComponentClass.styleSheet_ = new CSSStyleSheet();
-      ComponentClass.styleSheet_.replace(str);
-    }
+      if (void 0 === ComponentClass.styleSheet_) {
+        try {
+          ComponentClass.styleSheet_ = new CSSStyleSheet();
+        }
+        catch (/** @type {!Error} */ e) {
+          if (e instanceof TypeError) {
+            ComponentClass.styleSheet_ = null;
+          }
+          else {
+            throw e;
+          }
+        }
+      }
 
-    retVal.root_.adoptedStyleSheets = [ComponentClass.styleSheet_];
+      if (ComponentClass.styleSheet_) {
+        ComponentClass.styleSheet_.replaceSync(str);
+        retVal.root_.adoptedStyleSheets = [ComponentClass.styleSheet_];
+        break n1;
+      }
+
+      /** @const {!HTMLLinkElement} */
+      var htmlStyle = /** @const {!HTMLLinkElement} */(document.createElement('style'));
+      // WebKit Hack
+      htmlStyle.appendChild(document.createTextNode(''));
+
+      if (htmlStyle.textContent) {
+        htmlStyle.textContent = str;
+      }
+      else {
+        htmlStyle.innerHTML = str;
+      }
+
+      retVal.root_.appendChild(htmlStyle);
+    }
+    else {
+      retVal.root_.adoptedStyleSheets = [ComponentClass.styleSheet_];
+    }
 
     retVal.documentElement_ = (
       retVal.root_.appendChild(

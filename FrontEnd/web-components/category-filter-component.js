@@ -79,54 +79,15 @@ WebComponents.CategoryFilterComponent.prototype.connectedCallback = (
     /** @const {!HTMLElement} */
     var htmlElement = this;
 
-    this.itemCategoryId = Number(htmlElement.getAttribute('categoryId'));
-
-    /** @const {!CSSStyleSheet} */
-    var styleSheet = new CSSStyleSheet();
-
-    /** @type {number} */
-    var i = 0;
-    /** @const {!Array<string>} */
-    var arr = [
-      [
-        ':host',
-        '{',
-          '--cat-filter-label:\'', /** @type {string} */(
-            (function /** string */ foo (/** string */ str) {
-              /** @const {number} */
-              var len = str.length;
-
-              /** @const {!Array<string>} */
-              var retVal = [];
-
-              for (var i = 0; i !== len; ++i) {
-                retVal[retVal.length] = [
-                  '\\', str.charCodeAt(i).toString(16).padStart(6, '0')
-                ].join('');
-              }
-
-              return retVal.join('');
-            })(htmlElement.getAttribute('categoryName'))
-          ), '\';',
-        '}',
-      ].join('')
-    ];
-
-    /** @const {number} */
-    var len = arr.length;
-
-    /** @const {number} */
-    var startIdx = 0;
-
-    do {
-      styleSheet.insertRule(arr[i], startIdx + i);
-    } while (++i !== len);
-
-    this.root_.adoptedStyleSheets.unshift(styleSheet);
+    this.itemCategoryId = Number(htmlElement.getAttribute('category-id'));
 
     /** @const {!HTMLInputElement} */
     var checkboxElement = /** @type {!HTMLInputElement} */(
       this.documentElement_
+    );
+
+    checkboxElement.dataset['categoryName'] = (
+      htmlElement.getAttribute('category-name')
     );
 
     checkboxElement.onchange = this.onCheckboxChange.bind(this);

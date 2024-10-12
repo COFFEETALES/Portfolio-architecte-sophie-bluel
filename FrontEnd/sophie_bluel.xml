@@ -5,7 +5,7 @@
         <bluel:gallery-item-template>
             <bluel:custom-style>
               <![CDATA[
-                :host figcaption, :host figure, :host img {
+                figcaption, figure, img {
                     margin: 0;
                     padding: 0;
                     border: 0;
@@ -13,10 +13,10 @@
                     font: inherit;
                     vertical-align: baseline;
                 }
-                :host figcaption, :host figure {
+                figcaption, figure {
                     display: block;
                 }
-                :host img {
+                img {
                     width: 100%;
                 }
               ]]>
@@ -29,14 +29,8 @@
         <bluel:category-filter-template>
             <bluel:custom-style>
               <![CDATA[
-                :host {
-                    --cat-filter-background-color: #fff;
-                    --cat-filter-border-color: #1d6154;
-                    --cat-filter-checked-background-color: #1d6154;
-                    --cat-filter-checked-font-color: #fff;
-                    --cat-filter-font-color: #1d6154;
-                }
-                :host input[type="checkbox"] {
+                input[type="checkbox"] {
+                    -moz-appearance: none;
                     appearance: none;
                     background-color: var(--cat-filter-background-color);
                     border-radius: 60px;
@@ -55,23 +49,23 @@
                     white-space: nowrap;
                     width: 100%;
                 }
-                :host input[type="checkbox"]::after {
+                input[type="checkbox"]::after {
                     color: var(--cat-filter-font-color);
                     margin: 0;
                     padding: 0;
                     text-align: center;
                 }
-                :host input[type="checkbox"]:checked::after {
+                input[type="checkbox"]:checked::after {
                     color: var(--cat-filter-checked-font-color);
                 }
-                :host input[type="checkbox"]:hover::after {
+                input[type="checkbox"]:hover::after {
                     text-decoration: underline;
                 }
-                :host input[type="checkbox"]:checked {
+                input[type="checkbox"]:checked {
                     background-color: var(--cat-filter-checked-background-color);
                 }
-                :host input[type="checkbox"]::after {
-                    content: var(--cat-filter-label);
+                input[type="checkbox"]::after {
+                    content: attr(data-category-name);
                 }
               ]]>
             </bluel:custom-style>

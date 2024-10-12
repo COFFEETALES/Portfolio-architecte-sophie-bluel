@@ -22,69 +22,106 @@ Services.RouterService = (
     );
 
     /**
-     * @const {!Array<{itemName: string, itemPath: string, itemAuthPath: string}>}
+     * @const {
+     *   !Array<{
+     *     itemName: string,
+     *     itemPathNames: !Array<string>,
+     *     itemAuthPathNames: !Array<string>
+     *   }>
+     * }
      * @private
      */
-    this.sectionNames_ = [];
+    this.sectionItems_ = [];
 
     for (var /** @type {number} */ i = 0, /** @type {number} */ n = sections.snapshotLength ; i !== n ; ++i) {
       /** @const {!HTMLElement} */
       var section = /** @type {!HTMLElement} */(sections.snapshotItem(i));
-      this.sectionNames_[this.sectionNames_.length] = (
+
+      /** @const {string} */
+      var path = section.dataset['path'];
+
+      /** @const {string} */
+      var authPath = section.dataset['authPath'];
+
+      this.sectionItems_[this.sectionItems_.length] = (
         {
           itemName: section.id,
-          itemPath: section.dataset['path'],
-          itemAuthPath: section.dataset['authPath'] || ''
+          itemPathNames: path.split(', '),
+          itemAuthPathNames: authPath ? authPath.split(', ') : []
         }
       );
     }
+
+    Utils.me_().onpopstate = (
+      Services.RouterService.onPopState_.bind(this)
+    );
   }
 );
 
+/**
+ * @this {!Services.RouterService}
+ * @param {?Event} event
+ * @return {void|null}
+ * @private
+ */
+Services.RouterService.onPopState_ = (
+  function (event) {
+//    /** @const {!PopStateEvent} */
+//    var popStateEvent = /** @type {!PopStateEvent} */(event);
+
+    /** @const {!URL} */
+    var currentUrl = new URL(Utils.me_().location.href);
+
+    this.navigate(currentUrl, true);
+  }
+);
 
 /**
- * @param {string} viewNames
+ * @param {!URL} url
+ * @param {boolean=} opt_isPopState
  * @return {void}
  */
-Services.RouterService.prototype.navigate = function (viewNames) {
+Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
+  if ('/' === url.pathname) {
+    url.pathname = this.apiService.isLoggedIn() ? '/Homepage_edit' : '/Homepage';
+  }
 
-  Utils.getElement('logged-in-banner').style.display = (
-    this.apiService.isLoggedIn() ? '' : 'none'
-  );
-
-  for (var /** @type {number} */ i = 0, /** @type {number} */ n = this.sectionNames_.length ; i !== n ; ++i) {
-    Utils.getElement(this.sectionNames_[i].itemName).style.display = 'none';
+  for (var /** @type {number} */ i = 0, /** @type {number} */ n = this.sectionItems_.length ; i !== n ; ++i) {
+    Utils.getElement(this.sectionItems_[i].itemName).style.display = 'none';
   }
 
   /**
    * @const {!Array<string>}
    */
-  var targetViews = viewNames.split(/,\s*/);
+  var targetViews = [];
 
-  /** @const {!URL} */
-  var desiredUrl = new URL(window.location.href);
+  for (i = 0, n = this.sectionItems_.length ; i !== n ; ++i) {
+    /** @const */
+    var item = this.sectionItems_[i];
 
-  for (i = 0, n = this.sectionNames_.length ; i !== n ; ++i) {
-    if (this.sectionNames_[i].itemName === targetViews[0]) {
-      desiredUrl.pathname = (
-        this.apiService.isLoggedIn() ? this.sectionNames_[i].itemAuthPath : this.sectionNames_[i].itemPath
-      );
-      break;
+    /** @const {!Array<string>} */
+    var currentPath = (
+      this.apiService.isLoggedIn() ? item.itemAuthPathNames : item.itemPathNames
+    );
+
+    if (-1 !== currentPath.indexOf(url.pathname)) {
+      targetViews[targetViews.length] = item.itemName;
     }
   }
 
-  history.pushState({}, '', desiredUrl);
+  if (!targetViews.length) {
+    targetViews[targetViews.length] = 'introduction';
+  }
+
+  /** @const {!URL} */
+  var desiredUrl = url;
 
   for (i = 0, n = targetViews.length ; i !== n ; ++i) {
     Utils.getElement(targetViews[i]).style.display = '';
+  }
 
-    if ('login' === targetViews[i]) {
-      /** @const {!HTMLInputElement} */
-      var submitButton = /** @type {!HTMLInputElement} */(
-       Utils.getElement('login-submit')
-      );
-      submitButton.removeAttribute('disabled');
-    }
+  if (!opt_isPopState) {
+    history.pushState({}, '', desiredUrl);
   }
 };
 

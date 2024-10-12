@@ -33,15 +33,15 @@ WebComponents.GalleryItemComponent.prototype.connectedCallback = (
     /** @const {!HTMLElement} */
     var htmlElement = this;
 
-    this.itemCategoryId = Number(htmlElement.getAttribute('galleryItemCategoryId'));
+    this.itemCategoryId = Number(htmlElement.getAttribute('gallery-item-category-id'));
 
     /** @const {!HTMLImageElement} */
     var imgElement = /** @type {!HTMLImageElement} */(this.documentElement_.querySelector('img'));
 
-    imgElement.src = htmlElement.getAttribute('galleryItemImageUrl');
-    imgElement.alt = htmlElement.getAttribute('galleryItemTitle');
+    imgElement.src = htmlElement.getAttribute('gallery-item-imageurl');
+    imgElement.alt = htmlElement.getAttribute('gallery-item-title');
 
-    this.documentElement_.querySelector('figcaption').textContent = htmlElement.getAttribute('galleryItemTitle');
+    this.documentElement_.querySelector('figcaption').textContent = htmlElement.getAttribute('gallery-item-title');
   }
 );
 

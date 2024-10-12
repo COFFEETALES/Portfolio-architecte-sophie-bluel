@@ -111,6 +111,7 @@ Services.ApiService.processLoginResponse_ = (
   function (login) {
     this.currentUserId_ = login.userId;
     this.currentToken_ = login.token;
+    Utils.me_().document.body.className = 'auth-state-active';
     return;
   }
 );
@@ -120,6 +121,7 @@ Services.ApiService.processLoginResponse_ = (
  */
 Services.ApiService.prototype.logout = (
   function () {
+    Utils.me_().document.body.className = 'auth-state-inactive';
     this.currentUserId_ = null;
     this.currentToken_ = null;
   }

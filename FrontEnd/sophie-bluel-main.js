@@ -39,8 +39,12 @@ var SophieBluel = (
     /** @const {!Services.ApiService} */
     this.apiService = Services.ApiService.getInstance();
 
-    Utils.me_().customElements.define('gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent));
-    Utils.me_().customElements.define('category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent));
+    Utils.me_().customElements.define(
+      'gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent)
+    );
+    Utils.me_().customElements.define(
+      'category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent)
+    );
 
     /** @const {!HTMLElement} */
     var nav = /** @type {!HTMLElement} */(Utils.getElement('header-navigation-bar'));
@@ -78,12 +82,6 @@ SophieBluel.onNavLoginClick_ = function (event) {
   if (this.apiService.isLoggedIn()) {
     event.preventDefault();
     event.stopPropagation();
-
-    /** @const {!HTMLAnchorElement} */
-    var loginLink = /** @type {!HTMLAnchorElement} */(
-      event.currentTarget
-    );
-    loginLink.textContent = 'Login';
 
     this.apiService.logout();
 
@@ -134,17 +132,14 @@ SophieBluel.onLoginSumbit_ = function (event) {
         Utils.getElement('anchor-projects')
       );
       portfolioLink.click();
-
-      /** @const {!HTMLAnchorElement} */
-      var loginLink = /** @type {!HTMLAnchorElement} */(
-        Utils.getElement('anchor-login')
-      );
-      loginLink.textContent = 'Logout';
     }
   ).catch(
     function (error) {
-      submitButton.removeAttribute('disabled');
       console.error(error);
+    }
+  ).then(
+    function () {
+      submitButton.removeAttribute('disabled');
     }
   );
 
@@ -172,15 +167,32 @@ SophieBluel.onNavClick_ = function (event) {
     var anchor = /** @type {!HTMLAnchorElement} */(event.target);
 
     /**
-     * @const {string|void}
+     * @type {!URL}
      */
-    var viewNames = anchor.dataset['viewNames'];
+    var desiredUrl;
 
-    this.routerService.navigate(viewNames || '');
+    /**
+     * @type {string}
+     */
+    var authHref = anchor.dataset['authHref'];
+
+    if (this.apiService.isLoggedIn()) {
+      if (!authHref) {
+        return;
+      }
+
+      desiredUrl = new URL(Utils.me_().location.href);
+      desiredUrl.pathname = authHref;
+    }
+    else {
+      desiredUrl = new URL(anchor.href);
+    }
+
+    this.routerService.navigate(desiredUrl);
   }
 };
 
-window.onload = /** @const {function(Event?):void|null} */ (
+Utils.me_().onload = /** @const {function(Event?):void|null} */ (
   function (event) {
     new SophieBluel;
   }

@@ -29,16 +29,16 @@
 	-->
 	<!-- fi -->
 </head>
-<body>
+<body class="auth-state-inactive">
 <header>
-	<div id="logged-in-banner" style="display: none"><!-- --></div>
+	<div class="auth-logged-in edit-icon" id="logged-in-banner"><!-- --></div>
 	<div>
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav id="header-navigation-bar">
 			<ul>
-				<li><a href="#" onclick="event.preventDefault();" id="anchor-projects" data-view-names="introduction, portfolio, contact">projets</a></li>
-				<li>contact</li>
-				<li><a href="#" onclick="event.preventDefault();" id="anchor-login" data-view-names="login">login</a></li>
+				<li><a href="/Homepage" data-auth-href="/Homepage_edit" onclick="event.preventDefault();" id="anchor-projects">projets</a></li>
+				<li><a href="/Contact" data-auth-href="/Contact" onclick="event.preventDefault();">contact</a></li>
+				<li><a href="/Login" onclick="event.preventDefault();" id="anchor-login"><span>login / logout</span></a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -71,60 +71,14 @@
 			<a href="#" onclick="event.preventDefault();">Mot de passe oublié ?</a>
 		</form>
 	</section>
-	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<div class="category-catalogue" id="portfolio-category-catalogue">
+	<section id="portfolio" data-path="/Homepage" data-auth-path="/Homepage_edit">
+		<h2 id="h2-my-projects">Mes Projets</h2><a class="auth-logged-in edit-icon" href="#" id="anchor-project-edit">Modifier</a>
+		<div class="auth-logged-out category-catalogue" id="portfolio-category-catalogue">
 		</div>
 		<div class="gallery" id="portfolio-gallery">
-<!--
-			<figure>
-				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-				<figcaption>Abajour Tahina</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-				<figcaption>Appartement Paris V</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-				<figcaption>Restaurant Sushisen - Londres</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-				<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-				<figcaption>Structures Thermopolis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-				<figcaption>Appartement Paris X</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-				<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-				<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-				<figcaption>Appartement Paris XVIII</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-				<figcaption>Bar “Lullaby” - Paris</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-				<figcaption>Hotel First Arte - New Delhi</figcaption>
-			</figure>
--->
 		</div>
 	</section>
-	<section id="contact">
+	<section id="contact" data-path="/Homepage, /Contact" data-auth-path="/Homepage_edit, /Contact">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
 		<form action="#" method="post">
@@ -146,6 +100,6 @@
 		</ul>
 	</nav>
 </footer>
-<object data="sophie_bluel.xml" height="0" id="sophie-bluel-xml" style="display:block" type="text/xml" width="0"></object>
+<object data="sophie_bluel.xml" height="0" id="sophie-bluel-xml" style="display: block" type="text/xml" width="0"></object>
 </body>
 </html>

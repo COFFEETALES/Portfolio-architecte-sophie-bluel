@@ -66,8 +66,8 @@ Containers.GalleryContainer.prototype.loadCategories = (
             document.createElement('category-filter')
           );
 
-          categoryFilter.setAttribute('categoryId', item.id);
-          categoryFilter.setAttribute('categoryName', item.name);
+          categoryFilter.setAttribute('category-id', item.id);
+          categoryFilter.setAttribute('category-name', item.name);
           categoryCatalogue.appendChild(categoryFilter);
           categoryFilter.setChecked(true);
         }
@@ -111,10 +111,10 @@ Containers.GalleryContainer.prototype.loadGallery = (
 
           /** @const {!Element} */
           var galleryItem = document.createElement('gallery-item');
-          galleryItem.setAttribute('galleryItemId', item.id);
-          galleryItem.setAttribute('galleryItemCategoryId', item.categoryId);
-          galleryItem.setAttribute('galleryItemTitle', item.title);
-          galleryItem.setAttribute('galleryItemImageUrl', item.imageUrl);
+          galleryItem.setAttribute('gallery-item-id', item.id);
+          galleryItem.setAttribute('gallery-item-category-id', item.categoryId);
+          galleryItem.setAttribute('gallery-item-title', item.title);
+          galleryItem.setAttribute('gallery-item-imageurl', item.imageUrl);
           gallery.appendChild(galleryItem);
         }
       }.bind(this)
