@@ -11,23 +11,34 @@ Services.RouterService = (
     /** @const {!Services.ApiService} */
     this.apiService = Services.ApiService.getInstance();
 
+    /** @const {!Element} */
+    var mainElement = document.getElementsByTagName('main')[0];
+
     /** @const {!XPathResult} */
     var sections = (
       Utils.xpathEvaluate(
         document,
-        '/xhtml:html/xhtml:body/xhtml:main/xhtml:section',
-        document.documentElement,
+        'xhtml:section | xhtml:dialog/xhtml:div/xhtml:section',
+        mainElement,
         XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE
       )
     );
 
     /**
+     * @const {!HTMLDialogElement}
+     */
+    this.editDialogElement = /** @type {!HTMLDialogElement} */(
+      Utils.xpathEvaluate(
+        document,
+        './xhtml:dialog',
+        mainElement,
+        XPathResult.FIRST_ORDERED_NODE_TYPE
+      ).singleNodeValue
+    );
+
+    /**
      * @const {
-     *   !Array<{
-     *     itemName: string,
-     *     itemPathNames: !Array<string>,
-     *     itemAuthPathNames: !Array<string>
-     *   }>
+     *   !Array<!Services.RouterService.SectionItem_>
      * }
      * @private
      */
@@ -45,8 +56,9 @@ Services.RouterService = (
 
       this.sectionItems_[this.sectionItems_.length] = (
         {
+          withinDialog: 'DIALOG' === section.parentElement.parentElement.tagName,
           itemName: section.id,
-          itemPathNames: path.split(', '),
+          itemPathNames: path ? path.split(', ') : [],
           itemAuthPathNames: authPath ? authPath.split(', ') : []
         }
       );
@@ -57,6 +69,20 @@ Services.RouterService = (
     );
   }
 );
+
+
+/**
+ * @typedef {
+ *   {
+ *     withinDialog: boolean,
+ *     itemName: string,
+ *     itemPathNames: !Array<string>,
+ *     itemAuthPathNames: !Array<string>
+ *   }
+ * }
+ * @private
+ */
+Services.RouterService.SectionItem_;
 
 /**
  * @this {!Services.RouterService}
@@ -86,18 +112,17 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
     url.pathname = this.apiService.isLoggedIn() ? '/Homepage_edit' : '/Homepage';
   }
 
-  for (var /** @type {number} */ i = 0, /** @type {number} */ n = this.sectionItems_.length ; i !== n ; ++i) {
-    Utils.getElement(this.sectionItems_[i].itemName).style.display = 'none';
-  }
+  /** @const {!URL} */
+  var desiredUrl = url;
 
-  /**
-   * @const {!Array<string>}
-   */
+  /** @const {!Array<string>} */
   var targetViews = [];
 
-  for (i = 0, n = this.sectionItems_.length ; i !== n ; ++i) {
-    /** @const */
-    var item = this.sectionItems_[i];
+  /** @type {!Services.RouterService.SectionItem_} */
+  var item;
+
+  for (var /** @type {number} */ i = 0, /** @type {number} */ n = this.sectionItems_.length ; i !== n ; ++i) {
+    item = this.sectionItems_[i];
 
     /** @const {!Array<string>} */
     var currentPath = (
@@ -113,11 +138,51 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
     targetViews[targetViews.length] = 'introduction';
   }
 
-  /** @const {!URL} */
-  var desiredUrl = url;
+  /** @const {!Event} */
+  var leaveEvent = new Event('leave');
 
-  for (i = 0, n = targetViews.length ; i !== n ; ++i) {
-    Utils.getElement(targetViews[i]).style.display = '';
+  /** @const {!Event} */
+  var enterEvent = new Event('enter');
+
+  /** @type {!Element} */
+  var elem;
+
+  for (i = 0, n = this.sectionItems_.length ; i !== n ; ++i) {
+    item = this.sectionItems_[i];
+
+    /** @const {string} */
+    var itemName = item.itemName;
+
+    elem = Utils.getElement(itemName);
+
+    if (-1 === targetViews.indexOf(itemName)) {
+      if ('none' !== elem.style.display) {
+        elem.style.display = 'none';
+        elem.dispatchEvent(leaveEvent);
+      }
+      continue;
+    }
+
+    elem.style.display = '';
+    elem.dispatchEvent(enterEvent);
+  }
+
+  for (i = 0, n = this.sectionItems_.length ; i !== n ; ++i) {
+    item = this.sectionItems_[i];
+
+    if (item.withinDialog && -1 !== targetViews.indexOf(itemName)) {
+      elem = Utils.getElement(item.itemName);
+
+      if (!this.editDialogElement.open) {
+        this.editDialogElement.showModal();
+      }
+      break;
+    }
+    else if ((n - 1) === i) {
+      if (this.editDialogElement.open) {
+        this.editDialogElement.close();
+      }
+    }
   }
 
   if (!opt_isPopState) {

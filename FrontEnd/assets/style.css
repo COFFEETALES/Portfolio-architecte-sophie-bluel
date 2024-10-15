@@ -349,3 +349,30 @@ body.auth-state-inactive .auth-logged-in,
 body.auth-state-active .auth-logged-out {
 	display: none ! important;
 }
+
+main > dialog:first-of-type {
+	background: transparent;
+	border: 0;
+	padding: 0;
+}
+main > dialog:first-of-type > div:first-of-type {
+	background-color: #fff;
+	border-radius: 20px;
+	border: 0;
+}
+main > dialog:first-of-type div.header:first-of-type {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 40px;
+}
+main > dialog:first-of-type::backdrop {
+	background: rgba(0, 0, 0, .40);
+}
+main > dialog:first-of-type a.dialog-sys-btn {
+	padding: 10px;
+}
+#portfolio-gallery-edit {
+	height: 680px;
+	width: 640px;
+}

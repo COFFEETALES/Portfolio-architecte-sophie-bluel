@@ -16,11 +16,11 @@
 	<script type="application/javascript" src="utils/dom-utils.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="utils/web-component.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/api-service.js" charset="UTF-8" defer></script>
-	<script type="application/javascript" src="services/auth-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/project-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/router-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="web-components/category-filter-component.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="web-components/gallery-item-component.js" charset="UTF-8" defer></script>
+	<script type="application/javascript" src="containers/gallery-edit-dialog-container.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="containers/gallery-container.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="sophie-bluel-main.js" charset="UTF-8" defer></script>
 	<!-- else -->
@@ -45,7 +45,7 @@
 	</div>
 </header>
 <main>
-	<section id="introduction" data-path="/Homepage" data-auth-path="/Homepage_edit">
+	<section id="introduction" data-auth-path="/Homepage_edit, /Homepage_edit_1" data-path="/Homepage" style="display: none">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
 		</figure>
@@ -56,12 +56,12 @@
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
-	<section id="login" style="display: none" data-path="/Login">
+	<section id="login" data-path="/Login" style="display: none">
 		<h2>Login</h2>
 		<form action="#" autocomplete="off" id="form-login" onsubmit="event.preventDefault();">
 			<div>
 				<label for="email">E-mail</label>
-				<input autocomplete="off" id="login-email" name="login-email" required type="email" value="joffrey.romero@outlook.com"/>
+				<input autocomplete="off" id="login-email" name="login-email" required type="email" value="coffee@coffeetales.net"/>
 			</div>
 			<div>
 				<label for="password">Mot de passe</label>
@@ -71,14 +71,12 @@
 			<a href="#" onclick="event.preventDefault();">Mot de passe oublié ?</a>
 		</form>
 	</section>
-	<section id="portfolio" data-path="/Homepage" data-auth-path="/Homepage_edit">
-		<h2 id="h2-my-projects">Mes Projets</h2><a class="auth-logged-in edit-icon" href="#" id="anchor-project-edit">Modifier</a>
-		<div class="auth-logged-out category-catalogue" id="portfolio-category-catalogue">
-		</div>
-		<div class="gallery" id="portfolio-gallery">
-		</div>
+	<section id="portfolio" data-auth-path="/Homepage_edit, /Homepage_edit_1" data-path="/Homepage" style="display: none">
+		<h2 id="h2-my-projects">Mes Projets</h2><a class="auth-logged-in edit-icon" data-auth-href="/Homepage_edit_1" href="#" id="anchor-project-edit" onclick="event.preventDefault();">Modifier</a>
+		<div class="auth-logged-out category-catalogue" id="portfolio-category-catalogue"><!-- --></div>
+		<div class="gallery" id="portfolio-gallery"><!-- --></div>
 	</section>
-	<section id="contact" data-path="/Homepage, /Contact" data-auth-path="/Homepage_edit, /Contact">
+	<section id="contact" data-auth-path="/Homepage_edit, /Homepage_edit_1, /Contact" data-path="/Homepage, /Contact" style="display: none">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
 		<form action="#" method="post">
@@ -91,8 +89,21 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+	<dialog>
+		<div>
+			<div class="header">
+				<a class="dialog-sys-btn" href="#" onclick="event.preventDefault(); history.back();">
+					<svg width="18" height="18" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.439478 8.94458C-0.146493 9.53055 -0.146493 10.4822 0.439478 11.0681L7.9399 18.5686C8.52587 19.1545 9.47748 19.1545 10.0635 18.5686C10.6494 17.9826 10.6494 17.031 10.0635 16.445L5.11786 11.5041H19.4999C20.3297 11.5041 21 10.8338 21 10.004C21 9.17428 20.3297 8.50393 19.4999 8.50393H5.12255L10.0588 3.56303C10.6447 2.97706 10.6447 2.02545 10.0588 1.43948C9.47279 0.853507 8.52118 0.853507 7.93521 1.43948L0.43479 8.9399L0.439478 8.94458Z" fill="black"/></svg>
+				</a>
+				<a class="dialog-sys-btn" href="#" onclick="event.preventDefault(); event.currentTarget.parentNode.parentNode.parentNode.close();">
+					<svg width="18" height="18" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.6546 2.05106C12.1235 1.58214 12.1235 0.820611 11.6546 0.351691C11.1856 -0.11723 10.4241 -0.11723 9.95519 0.351691L6.005 4.30563L2.05106 0.355442C1.58214 -0.113479 0.820611 -0.113479 0.351691 0.355442C-0.11723 0.824363 -0.11723 1.58589 0.351691 2.05481L4.30563 6.005L0.355442 9.95894C-0.113479 10.4279 -0.113479 11.1894 0.355442 11.6583C0.824363 12.1272 1.58589 12.1272 2.05481 11.6583L6.005 7.70437L9.95894 11.6546C10.4279 12.1235 11.1894 12.1235 11.6583 11.6546C12.1272 11.1856 12.1272 10.4241 11.6583 9.95519L7.70437 6.005L11.6546 2.05106Z" fill="black"/></svg>
+				</a>
+			</div>
+			<section id="portfolio-gallery-edit" data-auth-path="/Homepage_edit_1" style="display: none">
+			</section>
+		</div>
+	</dialog>
 </main>
-
 <footer>
 	<nav>
 		<ul>

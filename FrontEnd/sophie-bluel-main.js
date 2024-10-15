@@ -33,12 +33,6 @@ var HttpEndpoints = {
  */
 var SophieBluel = (
   function () {
-    /** @const {!Services.RouterService} */
-    this.routerService = Services.RouterService.getInstance();
-
-    /** @const {!Services.ApiService} */
-    this.apiService = Services.ApiService.getInstance();
-
     Utils.me_().customElements.define(
       'gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent)
     );
@@ -46,16 +40,30 @@ var SophieBluel = (
       'category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent)
     );
 
+    /** @const {!Services.ApiService} */
+    this.apiService = Services.ApiService.getInstance();
+
+    /** @const {!Services.RouterService} */
+    this.routerService = Services.RouterService.getInstance();
+
+
     /** @const {!HTMLElement} */
-    var nav = /** @type {!HTMLElement} */(Utils.getElement('header-navigation-bar'));
-    nav.onclick = SophieBluel.onNavClick_.bind(this);
+    var nav = /** @type {!HTMLElement} */(
+      Utils.getElement('header-navigation-bar')
+    );
+
+    /** @const {!HTMLAnchorElement} */
+    var projectEdit = /** @type {!HTMLAnchorElement} */(
+      Utils.getElement('anchor-project-edit')
+    );
+
+    nav.onclick = projectEdit.onclick = SophieBluel.onNavClick_.bind(this);
 
     /** @const {!HTMLFormElement} */
-    var loginForm = /** @type {!HTMLFormElement} */(Utils.getElement('form-login'));
+    var loginForm = /** @type {!HTMLFormElement} */(
+      Utils.getElement('form-login')
+    );
     loginForm.onsubmit = SophieBluel.onLoginSumbit_.bind(this);
-
-    /** @const {!Containers.GalleryContainer} */
-    var gallery = Containers.GalleryContainer.getInstance();
 
     /** @const {!HTMLAnchorElement} */
     var loginLink = /** @type {!HTMLAnchorElement} */(
@@ -63,8 +71,18 @@ var SophieBluel = (
     );
     loginLink.onclick = SophieBluel.onNavLoginClick_.bind(this);
 
+
+    /** @const {!Containers.GalleryContainer} */
+    var gallery = new Containers.GalleryContainer;
+
     gallery.loadCategories();
     gallery.loadGallery();
+
+    this.routerService.navigate(new URL(Utils.me_().location.href), true);
+
+    ///** @const {!Containers.GalleryEditDialogContainer} */
+    //var galleryEditDialogContainer = new Containers.GalleryEditDialogContainer;
+    new Containers.GalleryEditDialogContainer;
   }
 );
 
@@ -172,7 +190,7 @@ SophieBluel.onNavClick_ = function (event) {
     var desiredUrl;
 
     /**
-     * @type {string}
+     * @const {string}
      */
     var authHref = anchor.dataset['authHref'];
 

@@ -8,6 +8,15 @@
  */
 Services.ApiService = (
   function () {
+    /** @const {!Storage} */
+    var sessionStorage = Utils.me_().sessionStorage;
+
+    this.currentUserId_ = parseInt(sessionStorage.getItem('userId'), 10) || null;
+    this.currentToken_ = sessionStorage.getItem('token') || null;
+
+    if (this.isLoggedIn()) {
+      Utils.me_().document.body.className = 'auth-state-active';
+    }
   }
 );
 
@@ -109,10 +118,15 @@ Services.ApiService.prototype.login = (
  */
 Services.ApiService.processLoginResponse_ = (
   function (login) {
+    /** @const {!Storage} */
+    var sessionStorage = Utils.me_().sessionStorage;
+    sessionStorage.setItem('userId', login.userId.toString(10));
+    sessionStorage.setItem('token', login.token);
+
     this.currentUserId_ = login.userId;
     this.currentToken_ = login.token;
+
     Utils.me_().document.body.className = 'auth-state-active';
-    return;
   }
 );
 
@@ -124,6 +138,11 @@ Services.ApiService.prototype.logout = (
     Utils.me_().document.body.className = 'auth-state-inactive';
     this.currentUserId_ = null;
     this.currentToken_ = null;
+
+    /** @const {!Storage} */
+    var sessionStorage = Utils.me_().sessionStorage;
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('token');
   }
 );
 

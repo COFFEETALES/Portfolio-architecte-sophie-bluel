@@ -4,13 +4,11 @@
 /**
  * @class
  * @constructor
- * @private
  */
 Containers.GalleryContainer = (
   function () {
-    if (Containers.GalleryContainer.instance_) {
-      throw Error('An instance of Containers.GalleryContainer already exists.');
-    }
+    /** @const {!Services.ApiService} */
+    this.apiService = Services.ApiService.getInstance();
 
     /** @const {!Services.ProjectService} */
     this.projectService = Services.ProjectService.getInstance();
@@ -30,6 +28,16 @@ Containers.GalleryContainer = (
     this.categoryCatalogueElement_.addEventListener(
       'categoryFilterChange', Containers.GalleryContainer.updateGalleryDisplay_.bind(this)
     );
+
+    /**
+     * @const {!Element}
+     * @private
+     */
+    this.portfolioElement_ = Utils.getElement('portfolio');
+
+    this.portfolioElement_.addEventListener(
+      'enter', Containers.GalleryContainer.onEnter_.bind(this)
+    );
   }
 );
 
@@ -40,6 +48,10 @@ Containers.GalleryContainer.prototype.loadCategories = (
   function () {
     /** @const {!Element} */
     var categoryCatalogue = this.categoryCatalogueElement_;
+
+    while (categoryCatalogue.firstChild) {
+      categoryCatalogue.removeChild(categoryCatalogue.firstChild);
+    }
 
     /** @const {!Promise<!Array<!ProjectService_CategoryInterface>>} */
     var p1 = this.projectService.getCategories();
@@ -84,6 +96,10 @@ Containers.GalleryContainer.prototype.loadGallery = (
     /** @const {!Element} */
     var gallery = this.galleryElement_;
 
+    while (gallery.firstChild) {
+      gallery.removeChild(gallery.firstChild);
+    }
+
     /** @const {!Promise<!Array<!ProjectService_WorkInterface>>} */
     var p1 = this.projectService.getProjects();
     p1.then(
@@ -119,6 +135,67 @@ Containers.GalleryContainer.prototype.loadGallery = (
         }
       }.bind(this)
     );
+  }
+);
+
+/**
+ * @this {!Containers.GalleryContainer}
+ * @param {!Event} event
+ * @return {void}
+ * @private
+ */
+Containers.GalleryContainer.onEnter_ = (
+  function (event) {
+    var /** !NodeList<!Node> */ nodes;
+    var /** !Node */ node;
+    var /** @type {number} */ i;
+    var /** @type {number} */ n;
+
+    /** @const {!Element} */
+    var gallery = this.galleryElement_;
+
+    /** @const {!Element} */
+    var categoryCatalogue = this.categoryCatalogueElement_;
+
+    /** @const {!Array<number>} */
+    var displayedCategories = [];
+
+    if (this.apiService.isLoggedIn()) {
+      displayedCategories[displayedCategories.length] = 0;
+    }
+    else {
+      nodes = categoryCatalogue.childNodes;
+      for (i = 0, n = nodes.length ; i !== n ; ++i) {
+        node = nodes[i];
+        if (Node.ELEMENT_NODE === node.nodeType) {
+          /** @const {!WebComponents.CategoryFilterComponent} */
+          var categoryFilter = /** @type {!WebComponents.CategoryFilterComponent} */(node);
+
+          if (categoryFilter.isChecked()) {
+            displayedCategories[displayedCategories.length] = categoryFilter.itemCategoryId;
+          }
+        }
+      }
+    }
+
+    nodes = gallery.childNodes;
+    for (i = 0, n = nodes.length ; i !== n ; ++i) {
+      node = nodes[i];
+      if (Node.ELEMENT_NODE === node.nodeType) {
+        /** @const {!WebComponents.GalleryItemComponent} */
+        var galleryItem = /** @type {!WebComponents.GalleryItemComponent} */(node);
+
+        /** @const {number} */
+        var categoryId = galleryItem.itemCategoryId;
+
+        if (-1 !== displayedCategories.indexOf(0) || -1 !== displayedCategories.indexOf(categoryId)) {
+          galleryItem.style.display = '';
+        }
+        else {
+          galleryItem.style.display = 'none';
+        }
+      }
+    }
   }
 );
 
@@ -214,20 +291,5 @@ Containers.GalleryContainer.updateGalleryDisplay_ = (
         }
       }
     }
-  }
-);
-
-/**
- * @type {!Containers.GalleryContainer|void}
- * @private
- */
-Containers.GalleryContainer.instance_;
-
-/**
- * @return {!Containers.GalleryContainer}
- */
-Containers.GalleryContainer.getInstance = (
-  function () {
-    return Containers.GalleryContainer.instance_ || (Containers.GalleryContainer.instance_ = new Containers.GalleryContainer);
   }
 );
