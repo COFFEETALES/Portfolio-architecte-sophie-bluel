@@ -8,17 +8,129 @@
  */
 Services.ProjectService = (
   function () {
-    /** @const {!Services.ApiService} */
-    this.apiService = Services.ApiService.getInstance();
+    /**
+     * @const {!Services.ApiService}
+     * @private
+     */
+    this.apiService_ = Services.ApiService.getInstance();
+
+    /**
+     * @const {!Array<!Services.ProjectService.EntryItem>}
+     * @private
+     */
+    this.dataStore_ = [];
   }
 );
 
+/**
+ * @typedef {
+ *   {
+ *     itemId: number,
+ *     itemCategoryId: number,
+ *     galleryItemElement: !HTMLElement,
+ *     galleryEditItemElement: !HTMLElement
+ *   }
+ * }
+ * @private
+ */
+Services.ProjectService.EntryItem;
 
 /**
  * @type {number}
  * @private
  */
 Services.ProjectService.prototype.numProjects_ = 0;
+
+/**
+ * @return {!Services.ProjectService.EntryItem|void}
+ * @param {number} id
+ */
+Services.ProjectService.prototype.findEntryItem = (
+  function (id) {
+    /** @const {number} */
+    var n = this.dataStore_.length;
+
+    for (var /** number */ i = 0 ; i !== n ; i++) {
+      if (id === this.dataStore_[i].itemId) {
+        return this.dataStore_[i];
+      }
+    }
+  }
+);
+
+/**
+ * @return {!Services.ProjectService.EntryItem|void}
+ * @param {number} id
+ */
+Services.ProjectService.prototype.deleteEntryItem = (
+  function (id) {
+    /** @const {number} */
+    var n = this.dataStore_.length;
+
+    for (var /** number */ i = 0 ; i !== n ; i++) {
+      if (id === this.dataStore_[i].itemId) {
+        return this.dataStore_.splice(i, 1)[0];
+      }
+    }
+  }
+);
+
+/**
+ * @return {!Services.ProjectService.EntryItem|void}
+ * @param {number} id
+ */
+Services.ProjectService.prototype.getEntryItem = (
+  function (id) {
+    return this.dataStore_[id];
+  }
+);
+
+/**
+ * @return {number}
+ */
+Services.ProjectService.prototype.getEntryItemCount = (
+  function () {
+    return this.dataStore_.length;
+  }
+);
+
+/**
+ * @return {!Services.ProjectService.EntryItem}
+ * @param {!ProjectService_WorkInterface} work
+ */
+Services.ProjectService.prototype.createEntryItem = (
+  function (work) {
+    /** @const {!HTMLElement} */
+    var galleryItemElement = /** @type {!HTMLElement} */(
+      document.createElement('gallery-item')
+    );
+    galleryItemElement.setAttribute('gallery-item-id', work.id);
+    galleryItemElement.setAttribute('gallery-item-category-id', work.categoryId);
+    galleryItemElement.setAttribute('gallery-item-title', work.title);
+    galleryItemElement.setAttribute('gallery-item-imageurl', work.imageUrl);
+
+    /** @const {!HTMLElement} */
+    var galleryEditItemElement = /** @type {!HTMLElement} */(
+      document.createElement('gallery-edit-item')
+    );
+    galleryEditItemElement.setAttribute('gallery-edit-item-id', work.id);
+    galleryEditItemElement.setAttribute('gallery-edit-item-category-id', work.categoryId);
+    galleryEditItemElement.setAttribute('gallery-edit-item-title', work.title);
+    galleryEditItemElement.setAttribute('gallery-edit-item-imageurl', work.imageUrl);
+
+    /** @const {!Services.ProjectService.EntryItem} */
+    var entryItem = {
+      itemId: work.id,
+      itemCategoryId: work.categoryId,
+      galleryItemElement: galleryItemElement,
+      galleryEditItemElement: galleryEditItemElement
+    };
+
+    return (
+      this.dataStore_[this.dataStore_.length] = entryItem
+    );
+  }
+);
 
 /**
  * @return {number}
@@ -61,9 +173,34 @@ Services.ProjectService.processJson_ = (
 Services.ProjectService.prototype.getCategories = (
   function () {
     return (
-      (this.apiService.request('GET', HttpEndpoints.GET_CATEGORIES)).then(
+      (this.apiService_.request('GET', HttpEndpoints.GET_CATEGORIES)).then(
         function (response) {
           return response.json();
+        }
+      )
+    );
+  }
+);
+
+/**
+ * @return {
+ *  !Promise<
+ *   void
+ *  >
+ * }
+ * @param {number} id
+ */
+Services.ProjectService.prototype.deleteWorks = (
+  function (id) {
+    return (
+      (this.apiService_.request('DELETE', [HttpEndpoints.DELETE_WORKS, id].join('/'))).then(
+        function (response) {
+          if (response.ok) {
+            return;
+          }
+          throw Error(
+            ['[', response.status, ']', ' ', response.statusText].join('')
+          );
         }
       )
     );
@@ -82,7 +219,7 @@ Services.ProjectService.prototype.getCategories = (
 Services.ProjectService.prototype.getProjects = (
   function () {
     return (
-      (this.apiService.request('GET', HttpEndpoints.GET_WORKS)).then(
+      (this.apiService_.request('GET', HttpEndpoints.GET_WORKS)).then(
         function (response) {
           return response.json();
         }

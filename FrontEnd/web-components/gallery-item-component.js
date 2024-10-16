@@ -20,9 +20,40 @@ WebComponents.GalleryItemComponent = (
 WebComponents.GalleryItemComponent.prototype = Object.create(HTMLElement.prototype);
 
 /**
- * @type {number}
+ * @return {number}
  */
-WebComponents.GalleryItemComponent.prototype.itemCategoryId = -1;
+WebComponents.GalleryItemComponent.prototype.getId = (
+  function () {
+    return Number(this.getAttribute('gallery-item-id'));
+  }
+);
+
+/**
+ * @return {number}
+ */
+WebComponents.GalleryItemComponent.prototype.getCategoryId = (
+  function () {
+    return Number(this.getAttribute('gallery-item-category-id'));
+  }
+);
+
+/**
+ * @return {string}
+ */
+WebComponents.GalleryItemComponent.prototype.getTitle = (
+  function () {
+    return this.getAttribute('gallery-item-title');
+  }
+);
+
+/**
+ * @return {string}
+ */
+WebComponents.GalleryItemComponent.prototype.getImageUrl = (
+  function () {
+    return this.getAttribute('gallery-item-imageurl');
+  }
+);
 
 /**
  * @override
@@ -32,8 +63,6 @@ WebComponents.GalleryItemComponent.prototype.connectedCallback = (
   function () {
     /** @const {!HTMLElement} */
     var htmlElement = this;
-
-    this.itemCategoryId = Number(htmlElement.getAttribute('gallery-item-category-id'));
 
     /** @const {!HTMLImageElement} */
     var imgElement = /** @type {!HTMLImageElement} */(this.documentElement_.querySelector('img'));

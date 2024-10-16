@@ -8,8 +8,11 @@
  */
 Services.RouterService = (
   function () {
-    /** @const {!Services.ApiService} */
-    this.apiService = Services.ApiService.getInstance();
+    /**
+     * @const {!Services.ApiService}
+     * @private
+     */
+    this.apiService_ = Services.ApiService.getInstance();
 
     /** @const {!Element} */
     var mainElement = document.getElementsByTagName('main')[0];
@@ -109,7 +112,7 @@ Services.RouterService.onPopState_ = (
  */
 Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
   if ('/' === url.pathname) {
-    url.pathname = this.apiService.isLoggedIn() ? '/Homepage_edit' : '/Homepage';
+    url.pathname = this.apiService_.isLoggedIn() ? '/Homepage_edit' : '/Homepage';
   }
 
   /** @const {!URL} */
@@ -126,7 +129,7 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
 
     /** @const {!Array<string>} */
     var currentPath = (
-      this.apiService.isLoggedIn() ? item.itemAuthPathNames : item.itemPathNames
+      this.apiService_.isLoggedIn() ? item.itemAuthPathNames : item.itemPathNames
     );
 
     if (-1 !== currentPath.indexOf(url.pathname)) {

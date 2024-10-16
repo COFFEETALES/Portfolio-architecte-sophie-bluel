@@ -11,7 +11,8 @@ var ServerHost = 'http://localhost:5678';
  *  {
  *   GET_WORKS: string,
  *   GET_CATEGORIES: string,
- *   POST_USERS_LOGIN: string
+ *   POST_USERS_LOGIN: string,
+ *   DELETE_WORKS: string
  *  }
  * }
  */
@@ -24,7 +25,8 @@ var HttpEndpointsInterface;
 var HttpEndpoints = {
   GET_WORKS: [ServerHost, 'api', 'works'].join('/'),
   GET_CATEGORIES: [ServerHost, 'api', 'categories'].join('/'),
-  POST_USERS_LOGIN: [ServerHost, 'api', 'users', 'login'].join('/')
+  POST_USERS_LOGIN: [ServerHost, 'api', 'users', 'login'].join('/'),
+  DELETE_WORKS: [ServerHost, 'api', 'works'].join('/')
 };
 
 /**
@@ -34,17 +36,26 @@ var HttpEndpoints = {
 var SophieBluel = (
   function () {
     Utils.me_().customElements.define(
-      'gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent)
-    );
-    Utils.me_().customElements.define(
       'category-filter', /** @type {function(new:HTMLElement)} */(WebComponents.CategoryFilterComponent)
     );
+    Utils.me_().customElements.define(
+      'gallery-edit-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryEditItemComponent)
+    );
+    Utils.me_().customElements.define(
+      'gallery-item', /** @type {function(new:HTMLElement)} */(WebComponents.GalleryItemComponent)
+    );
 
-    /** @const {!Services.ApiService} */
-    this.apiService = Services.ApiService.getInstance();
+    /**
+     * @const {!Services.ApiService}
+     * @private
+     */
+    this.apiService_ = Services.ApiService.getInstance();
 
-    /** @const {!Services.RouterService} */
-    this.routerService = Services.RouterService.getInstance();
+    /**
+     * @const {!Services.RouterService}
+     * @private
+     */
+    this.routerService_ = Services.RouterService.getInstance();
 
 
     /** @const {!HTMLElement} */
@@ -76,13 +87,14 @@ var SophieBluel = (
     var gallery = new Containers.GalleryContainer;
 
     gallery.loadCategories();
-    gallery.loadGallery();
-
-    this.routerService.navigate(new URL(Utils.me_().location.href), true);
 
     ///** @const {!Containers.GalleryEditDialogContainer} */
     //var galleryEditDialogContainer = new Containers.GalleryEditDialogContainer;
-    new Containers.GalleryEditDialogContainer;
+    new Containers.GalleryEditDialogContainer(
+      gallery.loadGallery()
+    );
+
+    this.routerService_.navigate(new URL(Utils.me_().location.href), true);
   }
 );
 
@@ -97,11 +109,11 @@ SophieBluel.onNavLoginClick_ = function (event) {
     return;
   }
 
-  if (this.apiService.isLoggedIn()) {
+  if (this.apiService_.isLoggedIn()) {
     event.preventDefault();
     event.stopPropagation();
 
-    this.apiService.logout();
+    this.apiService_.logout();
 
     /** @const {!HTMLAnchorElement} */
     var portfolioLink = /** @type {!HTMLAnchorElement} */(
@@ -140,7 +152,7 @@ SophieBluel.onLoginSumbit_ = function (event) {
     Utils.getElement('login-password')
   );
 
-  this.apiService.login(
+  this.apiService_.login(
     loginEmail.value,
     loginPassword.value
   ).then(
@@ -194,7 +206,7 @@ SophieBluel.onNavClick_ = function (event) {
      */
     var authHref = anchor.dataset['authHref'];
 
-    if (this.apiService.isLoggedIn()) {
+    if (this.apiService_.isLoggedIn()) {
       if (!authHref) {
         return;
       }
@@ -206,7 +218,7 @@ SophieBluel.onNavClick_ = function (event) {
       desiredUrl = new URL(anchor.href);
     }
 
-    this.routerService.navigate(desiredUrl);
+    this.routerService_.navigate(desiredUrl);
   }
 };
 

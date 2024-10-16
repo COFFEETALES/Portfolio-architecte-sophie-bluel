@@ -16,9 +16,13 @@ WebComponents.CategoryFilterComponent = (
 WebComponents.CategoryFilterComponent.prototype = Object.create(HTMLElement.prototype);
 
 /**
- * @type {number}
+ * @return {number}
  */
-WebComponents.CategoryFilterComponent.prototype.itemCategoryId = -1;
+WebComponents.CategoryFilterComponent.prototype.getCategoryId = (
+  function () {
+    return Number(this.getAttribute('category-id'));
+  }
+);
 
 /**
  * @return {boolean}
@@ -78,8 +82,6 @@ WebComponents.CategoryFilterComponent.prototype.connectedCallback = (
   function () {
     /** @const {!HTMLElement} */
     var htmlElement = this;
-
-    this.itemCategoryId = Number(htmlElement.getAttribute('category-id'));
 
     /** @const {!HTMLInputElement} */
     var checkboxElement = /** @type {!HTMLInputElement} */(

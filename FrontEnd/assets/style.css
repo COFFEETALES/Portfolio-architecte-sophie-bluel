@@ -210,20 +210,28 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+input[type="button"],
+input[type="submit"] {
+	-moz-appearance: none;
+	/*margin : 2em auto;*/
+	appearance: none;
 	background-color: #1D6154;
 	border-radius: 60px;
+	border: 0;
 	color: white;
 	cursor: pointer;
 	font-family: 'Syne';
+	font-size: 1.2em;
 	font-weight: 700;
-	margin : 2em auto;
+	height: 50px;
+	line-height: 1;
+	padding: 0 50px;
 	text-align: center;
-	width: 180px;
 }
-input[type="submit"][disabled="true"]{
-	cursor: auto;
+input[type="button"][disabled="true"],
+input[type="submit"][disabled="true"] {
 	background-color: #ddd;
+	cursor: auto;
 }
 
 footer nav ul {
@@ -353,6 +361,8 @@ body.auth-state-active .auth-logged-out {
 main > dialog:first-of-type {
 	background: transparent;
 	border: 0;
+	margin: auto;
+	overflow: hidden;
 	padding: 0;
 }
 main > dialog:first-of-type > div:first-of-type {
@@ -364,7 +374,7 @@ main > dialog:first-of-type div.header:first-of-type {
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
-	padding: 30px 40px;
+	padding: 40px 30px 0 30px;
 }
 main > dialog:first-of-type::backdrop {
 	background: rgba(0, 0, 0, .40);
@@ -372,7 +382,50 @@ main > dialog:first-of-type::backdrop {
 main > dialog:first-of-type a.dialog-sys-btn {
 	padding: 10px;
 }
+main > dialog:first-of-type section {
+	display: flex;
+	flex-direction: column;
+}
+main > dialog:first-of-type section .dialog-body {
+	flex-basis: auto;
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+main > dialog:first-of-type section .dialog-body#portfolio-gallery-edit-content {
+	align-content: flex-start;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 40px 80px;
+}
+main > dialog:first-of-type section .dialog-body#portfolio-gallery-edit-content gallery-edit-item {
+	width: calc(1.0 / 5.0 * 100% - 10px);
+	height: 116px;
+}
+main > dialog:first-of-type section .dialog-footer {
+	text-align: center;
+}
+main > dialog:first-of-type section .dialog-footer::before {
+	background: #c0c0c0;
+	content: '';
+	height: 1px;
+	margin: 0 80px;
+	display: block;
+}
+main > dialog:first-of-type h2 {
+	color: black;
+	font-family: 'Work Sans';
+	font-size: 1.9em;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 30px;
+	text-align: center;
+}
 #portfolio-gallery-edit {
 	height: 680px;
 	width: 640px;
+}
+#gallery-edit-add-btn::after {
+	content: 'test';
 }

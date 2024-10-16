@@ -7,11 +7,17 @@
  */
 Containers.GalleryContainer = (
   function () {
-    /** @const {!Services.ApiService} */
-    this.apiService = Services.ApiService.getInstance();
+    /**
+     * @const {!Services.ApiService}
+     * @private
+     */
+    this.apiService_ = Services.ApiService.getInstance();
 
-    /** @const {!Services.ProjectService} */
-    this.projectService = Services.ProjectService.getInstance();
+    /**
+     * @const {!Services.ProjectService}
+     * @private
+     */
+    this.projectService_ = Services.ProjectService.getInstance();
 
     /**
      * @const {!Element}
@@ -54,7 +60,7 @@ Containers.GalleryContainer.prototype.loadCategories = (
     }
 
     /** @const {!Promise<!Array<!ProjectService_CategoryInterface>>} */
-    var p1 = this.projectService.getCategories();
+    var p1 = this.projectService_.getCategories();
     p1.then(
       function (/** !Array<!ProjectService_CategoryInterface> */arg1) {
         if (!Array.isArray(arg1)) {
@@ -89,7 +95,7 @@ Containers.GalleryContainer.prototype.loadCategories = (
 );
 
 /**
- * @return {void}
+ * @return {!Promise<void>}
  */
 Containers.GalleryContainer.prototype.loadGallery = (
   function () {
@@ -101,39 +107,44 @@ Containers.GalleryContainer.prototype.loadGallery = (
     }
 
     /** @const {!Promise<!Array<!ProjectService_WorkInterface>>} */
-    var p1 = this.projectService.getProjects();
-    p1.then(
-      function (/** !Array<!ProjectService_WorkInterface> */arg1) {
-        if (!Array.isArray(arg1)) {
-          throw Error('');
-        }
-        //console.log('this.projectService', this.projectService.getProjectCount());
+    var p1 = this.projectService_.getProjects();
 
-        for (var /** number */ i = 0, /** number */ length = arg1.length ; i !== length ; ++i) {
-          /**
-           * @const {!ProjectService_WorkInterface}
-           */
-          var item = arg1[i];
+    return (
+      p1.then(
+        function (/** !Array<!ProjectService_WorkInterface> */arg1) {
+          if (!Array.isArray(arg1)) {
+            throw Error('');
+          }
+          //console.log('this.projectService_', this.projectService_.getProjectCount());
 
-          //console.log(
-          //  item.id,
-          //  item.title,
-          //  item.imageUrl,
-          //  item.categoryId,
-          //  item.userId,
-          //  item.category && item.category.id,
-          //  item.category && item.category.name
-          //);
+          for (var /** number */ i = 0, /** number */ length = arg1.length ; i !== length ; ++i) {
+            /**
+             * @const {!ProjectService_WorkInterface}
+             */
+            var item = arg1[i];
 
-          /** @const {!Element} */
-          var galleryItem = document.createElement('gallery-item');
-          galleryItem.setAttribute('gallery-item-id', item.id);
-          galleryItem.setAttribute('gallery-item-category-id', item.categoryId);
-          galleryItem.setAttribute('gallery-item-title', item.title);
-          galleryItem.setAttribute('gallery-item-imageurl', item.imageUrl);
-          gallery.appendChild(galleryItem);
-        }
-      }.bind(this)
+            //console.log(
+            //  item.id,
+            //  item.title,
+            //  item.imageUrl,
+            //  item.categoryId,
+            //  item.userId,
+            //  item.category && item.category.id,
+            //  item.category && item.category.name
+            //);
+
+            /** @const {!Services.ProjectService.EntryItem} */
+            var entryItem = this.projectService_.createEntryItem(item);
+
+            /** @const {!WebComponents.GalleryItemComponent} */
+            var galleryItemElement = /** @type {!WebComponents.GalleryItemComponent} */(
+              entryItem.galleryItemElement
+            );
+
+            gallery.appendChild(galleryItemElement);
+          }
+        }.bind(this)
+      )
     );
   }
 );
@@ -152,15 +163,12 @@ Containers.GalleryContainer.onEnter_ = (
     var /** @type {number} */ n;
 
     /** @const {!Element} */
-    var gallery = this.galleryElement_;
-
-    /** @const {!Element} */
     var categoryCatalogue = this.categoryCatalogueElement_;
 
     /** @const {!Array<number>} */
     var displayedCategories = [];
 
-    if (this.apiService.isLoggedIn()) {
+    if (this.apiService_.isLoggedIn()) {
       displayedCategories[displayedCategories.length] = 0;
     }
     else {
@@ -172,28 +180,32 @@ Containers.GalleryContainer.onEnter_ = (
           var categoryFilter = /** @type {!WebComponents.CategoryFilterComponent} */(node);
 
           if (categoryFilter.isChecked()) {
-            displayedCategories[displayedCategories.length] = categoryFilter.itemCategoryId;
+            displayedCategories[displayedCategories.length] = categoryFilter.getCategoryId();
           }
         }
       }
     }
 
-    nodes = gallery.childNodes;
-    for (i = 0, n = nodes.length ; i !== n ; ++i) {
-      node = nodes[i];
-      if (Node.ELEMENT_NODE === node.nodeType) {
-        /** @const {!WebComponents.GalleryItemComponent} */
-        var galleryItem = /** @type {!WebComponents.GalleryItemComponent} */(node);
+    n = this.projectService_.getEntryItemCount();
+    for (i = 0 ; i !== n ; i++) {
+      /** @const {!Services.ProjectService.EntryItem} */
+      var entryItem = /** @type {!Services.ProjectService.EntryItem} */(
+        this.projectService_.getEntryItem(i)
+      );
 
-        /** @const {number} */
-        var categoryId = galleryItem.itemCategoryId;
+      /** @const {!WebComponents.GalleryItemComponent} */
+      var galleryItemElement = /** @type {!WebComponents.GalleryItemComponent} */(
+        entryItem.galleryItemElement
+      );
 
-        if (-1 !== displayedCategories.indexOf(0) || -1 !== displayedCategories.indexOf(categoryId)) {
-          galleryItem.style.display = '';
-        }
-        else {
-          galleryItem.style.display = 'none';
-        }
+      /** @const {number} */
+      var categoryId = galleryItemElement.getCategoryId();
+
+      if (-1 !== displayedCategories.indexOf(0) || -1 !== displayedCategories.indexOf(categoryId)) {
+        galleryItemElement.style.display = '';
+      }
+      else {
+        galleryItemElement.style.display = 'none';
       }
     }
   }
@@ -207,7 +219,7 @@ Containers.GalleryContainer.onEnter_ = (
  */
 Containers.GalleryContainer.updateGalleryDisplay_ = (
   function (event) {
-    event.stopImmediatePropagation();
+    event.stopPropagation();
 
     /** @const {!CustomEvent<!WebComponents.CategoryFilterComponent>} */
     var customEvent = /** @type {!CustomEvent<!WebComponents.CategoryFilterComponent>} */(event);
@@ -215,15 +227,12 @@ Containers.GalleryContainer.updateGalleryDisplay_ = (
     /** @const {!Element} */
     var categoryCatalogue = this.categoryCatalogueElement_;
 
-    /** @const {!Element} */
-    var gallery = this.galleryElement_;
-
 
     /** @const {!WebComponents.CategoryFilterComponent} */
     var currentCategoryFilter = customEvent.detail;
 
     /** @const {boolean} */
-    var isDefaultCategory = 0 === currentCategoryFilter.itemCategoryId;
+    var isDefaultCategory = 0 === currentCategoryFilter.getCategoryId();
 
     /** @type {boolean} */
     var areAllCategoriesChecked = true;
@@ -238,14 +247,16 @@ Containers.GalleryContainer.updateGalleryDisplay_ = (
     /** @type {!WebComponents.CategoryFilterComponent} */
     var categoryFilter;
 
-    var /** !NodeList<!Node> */ nodes = categoryCatalogue.childNodes;
+    /** @const {!NodeList<!Node>} */
+    var nodes = categoryCatalogue.childNodes;
+
     var /** !Node */ node;
     for (var /** @type {number} */ i = 0, /** @type {number} */ n = nodes.length ; i !== n ; ++i) {
       node = nodes[i];
       if (Node.ELEMENT_NODE === node.nodeType) {
         categoryFilter = /** @type {!WebComponents.CategoryFilterComponent} */(node);
         categoryFilters[categoryFilters.length] = categoryFilter;
-        if (0 !== categoryFilter.itemCategoryId) {
+        if (0 !== categoryFilter.getCategoryId()) {
           areAllCategoriesChecked = categoryFilter.isChecked() ? areAllCategoriesChecked : false;
         }
       }
@@ -259,7 +270,7 @@ Containers.GalleryContainer.updateGalleryDisplay_ = (
           categoryFilter.setChecked(currentCategoryFilter.isChecked());
         }
       }
-      else if (0 === categoryFilter.itemCategoryId) {
+      else if (0 === categoryFilter.getCategoryId()) {
         if (!currentCategoryFilter.isChecked()) {
           categoryFilter.setChecked(false);
         }
@@ -269,26 +280,30 @@ Containers.GalleryContainer.updateGalleryDisplay_ = (
       }
 
       if (categoryFilter.isChecked()) {
-        displayedCategories[displayedCategories.length] = categoryFilter.itemCategoryId;
+        displayedCategories[displayedCategories.length] = categoryFilter.getCategoryId();
       }
     }
 
-    nodes = gallery.childNodes;
-    for (i = 0, n = nodes.length ; i !== n ; ++i) {
-      node = nodes[i];
-      if (Node.ELEMENT_NODE === node.nodeType) {
-        /** @const {!WebComponents.GalleryItemComponent} */
-        var galleryItem = /** @type {!WebComponents.GalleryItemComponent} */(node);
+    n = this.projectService_.getEntryItemCount();
+    for (i = 0 ; i !== n ; i++) {
+      /** @const {!Services.ProjectService.EntryItem} */
+      var entryItem = /** @type {!Services.ProjectService.EntryItem} */(
+        this.projectService_.getEntryItem(i)
+      );
 
-        /** @const {number} */
-        var categoryId = galleryItem.itemCategoryId;
+      /** @const {!WebComponents.GalleryItemComponent} */
+      var galleryItemElement = /** @type {!WebComponents.GalleryItemComponent} */(
+        entryItem.galleryItemElement
+      );
 
-        if (-1 !== displayedCategories.indexOf(categoryId)) {
-          galleryItem.style.display = '';
-        }
-        else {
-          galleryItem.style.display = 'none';
-        }
+      /** @const {number} */
+      var categoryId = galleryItemElement.getCategoryId();
+
+      if (-1 !== displayedCategories.indexOf(categoryId)) {
+        galleryItemElement.style.display = '';
+      }
+      else {
+        galleryItemElement.style.display = 'none';
       }
     }
   }
