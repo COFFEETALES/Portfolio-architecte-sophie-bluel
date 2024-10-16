@@ -13,7 +13,7 @@ Containers.GalleryEditDialogContainer = (
      * @const {!Promise<void>}
      * @private
      */
-    this.galleryIsReady_ = Promise.all([p1, p2]).then(function () {});
+    this.galleryIsReady_ = Promise.all([p1, p2]).then(Utils.nullFunction);
 
     /**
      * @const {!Services.ProjectService}
@@ -33,107 +33,286 @@ Containers.GalleryEditDialogContainer = (
      */
     this.dialogElement_ = this.routerService_.editDialogElement;
 
-    this.dialogElement_['onclose'] = (
-      Containers.GalleryEditDialogContainer.onDialogClose_.bind(this)
-    );
-
-    this.dialogElement_.onclick = (
-      Containers.GalleryEditDialogContainer.onDialogClick_.bind(this)
-    );
-
-//    /**
-//     * @const {!Element}
-//     * @private
-//     */
-//    this.galleryElement_ = (
-//      Utils.getElement('portfolio-gallery')
-//    );
-
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.addFileContainer_ = (
-      Utils.getElement('portfolio-add-file')
-    );
-
-    /**
-     * @const {!HTMLInputElement}
-     * @private
-     */
-    this.attachProjectFile_ = /** @type {!HTMLInputElement} */(
-      Utils.getElement('portfolio-attach-project-file')
-    );
-
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.galleryEdit_ = (
-      Utils.getElement('portfolio-edit')
-    );
-
-    this.galleryEdit_.addEventListener(
-      'enter', Containers.GalleryEditDialogContainer.onGalleryEditEnter_.bind(this)
-    );
-
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.galleryAdd_ = (
-      Utils.getElement('portfolio-add')
-    );
-
-    this.galleryAdd_.addEventListener(
-      'enter', Containers.GalleryEditDialogContainer.onGalleryAddEnter_.bind(this)
-    );
-
-    /**
-     * @const {!HTMLInputElement}
-     * @private
-     */
-    this.addTitle_ = /** @type {!HTMLInputElement} */(
-      Utils.getElement('portfolio-add-title')
-    );
-
-    /**
-     * @const {!HTMLSelectElement}
-     * @private
-     */
-    this.addCategory_ = /** @type {!HTMLSelectElement} */(
-      Utils.getElement('portfolio-add-category')
-    );
-
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.galleryEditContent_ = (
-      Utils.getElement('portfolio-gallery-edit')
-    );
-
-    this.galleryEditContent_.addEventListener(
-      'galleryEditItemClick', Containers.GalleryEditDialogContainer.onGalleryEditItemClick_.bind(this)
-    );
-
     /**
      * @const {!FileReader}
      * @private
      */
     this.fileReader_ = new FileReader();
 
+    /** @const {!HTMLInputElement} */
+    var attachProjectFile = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ATTACH_PROJECT_FILE
+      )
+    );
+
+    /** @const {!Element} */
+    var galleryEdit = (
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_EDIT
+      )
+    );
+
+    /** @const {!Element} */
+    var galleryAdd = (
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD
+      )
+    );
+
+    /** @const {!Element} */
+    var galleryEditContent = (
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_GALLERY_EDIT
+      )
+    );
+
+    /** @const {!HTMLInputElement} */
+    var addTitle = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_TITLE
+      )
+    );
+
+    /** @const {!Element} */
+    var galleryEditAddBtn = (
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.GALLERY_EDIT_ADD_BTN
+      )
+    );
+
+    /** @const {!HTMLFormElement} */
+    var addForm = /** @type {!HTMLFormElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_FORM
+      )
+    );
+
+//    /** @const {!HTMLSelectElement} */
+//    var addCategory = /** @type {!HTMLSelectElement} */(
+//      Utils.getElement(
+//        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_CATEGORY
+//      )
+//    );
+
+    this.dialogElement_['onclose'] = (
+      Containers.GalleryEditDialogContainer.onDialogClose_.bind(this)
+    );
+
+    this.dialogElement_.onmousedown = (
+      Containers.GalleryEditDialogContainer.onDialogClick_.bind(this)
+    );
+
+    attachProjectFile.onchange = (
+      Containers.GalleryEditDialogContainer.onAttachProjectFile_.bind(this)
+    );
+
+    galleryEdit.addEventListener(
+      'enter', Containers.GalleryEditDialogContainer.onGalleryEditEnter_.bind(this)
+    );
+
+    galleryAdd.addEventListener(
+      'enter', Containers.GalleryEditDialogContainer.onGalleryAddEnter_.bind(this)
+    );
+
+    galleryEditContent.addEventListener(
+      'galleryEditItemClick', Containers.GalleryEditDialogContainer.onGalleryEditItemClick_.bind(this)
+    );
+
     this.fileReader_.onload = (
       Containers.GalleryEditDialogContainer.onFileReaderLoad_.bind(this)
     );
 
-    Utils.getElement('gallery-edit-add-btn').onclick = (
+    addTitle.onkeypress = (
+      function /** void */ foo (/** ?Event */ event) {
+        /** @const {!KeyboardEvent} */
+        var keyEvent = /** @type {!KeyboardEvent} */(event);
+        if (0x0d === keyEvent.keyCode) {
+          /** @type {!Element} */(
+            keyEvent.currentTarget
+          ).blur();
+        }
+      }
+    );
+
+    galleryEditAddBtn.onclick = (
       Containers.GalleryEditDialogContainer.moveToAddPage_.bind(this)
     );
 
-    this.attachProjectFile_.onchange = (
-      Containers.GalleryEditDialogContainer.onAttachProjectFile_.bind(this)
+    addForm.onchange = (
+      Containers.GalleryEditDialogContainer.onFormChange_.bind(this)
     );
+
+    addForm.onsubmit = (
+      Containers.GalleryEditDialogContainer.onFormSubmit_.bind(this)
+    );
+  }
+);
+
+/**
+ * @const {
+ *  {
+ *   GALLERY_EDIT_ADD_BTN: string,
+ *   GALLERY_EDIT_IMG_PREVIEW: string,
+ *   PORTFOLIO_ADD: string,
+ *   PORTFOLIO_ADD_CATEGORY: string,
+ *   PORTFOLIO_ADD_FILE: string,
+ *   PORTFOLIO_ADD_FORM: string,
+ *   PORTFOLIO_ADD_TITLE: string,
+ *   PORTFOLIO_ATTACH_PROJECT_FILE: string,
+ *   PORTFOLIO_CATEGORY_CATALOGUE: string,
+ *   PORTFOLIO_EDIT: string,
+ *   PORTFOLIO_GALLERY: string,
+ *   PORTFOLIO_GALLERY_EDIT: string,
+ *   PORTFOLIO_GALLERY_EDIT_CONFIRM_BTN: string
+ *  }
+ * }
+ * @private
+ */
+Containers.GalleryEditDialogContainer.elementIds_ = {
+  GALLERY_EDIT_ADD_BTN: 'gallery-edit-add-btn',
+  GALLERY_EDIT_IMG_PREVIEW: 'gallery-edit-img-preview',
+  PORTFOLIO_ADD: 'portfolio-add',
+  PORTFOLIO_ADD_CATEGORY: 'portfolio-add-category',
+  PORTFOLIO_ADD_FILE: 'portfolio-add-file',
+  PORTFOLIO_ADD_FORM: 'portfolio-add-form',
+  PORTFOLIO_ADD_TITLE: 'portfolio-add-title',
+  PORTFOLIO_ATTACH_PROJECT_FILE: 'portfolio-attach-project-file',
+  PORTFOLIO_CATEGORY_CATALOGUE: 'portfolio-category-catalogue',
+  PORTFOLIO_EDIT: 'portfolio-edit',
+  PORTFOLIO_GALLERY: 'portfolio-gallery',
+  PORTFOLIO_GALLERY_EDIT: 'portfolio-gallery-edit',
+  PORTFOLIO_GALLERY_EDIT_CONFIRM_BTN: 'gallery-edit-confirm-btn',
+};
+
+/**
+ * @this {!Containers.GalleryEditDialogContainer}
+ * @param {?Event=} event
+ * @return {void}
+ * @private
+ */
+Containers.GalleryEditDialogContainer.onFormSubmit_ = (
+  function (event) {
+    event.preventDefault();
+
+    /** @const {!HTMLFormControlsCollection} */
+    var formControls = /** @type {!HTMLFormControlsCollection} */(
+      /** @type {!HTMLFormElement} */(event.currentTarget).elements
+    );
+
+    /** @const {!File} */
+    var file = (
+      /** @type {!HTMLInputElement} */(formControls['image']).files[0]
+    );
+
+    /** @const {string} */
+    var title = (
+      /** @type {!HTMLInputElement} */(formControls['title']).value
+    );
+
+    /** @const {number} */
+    var categoryId = (
+      parseInt(
+        /** @type {!HTMLSelectElement} */(formControls['category']).value, 10
+      )
+    );
+
+    /** @const {!FileReader} */
+    var fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+
+    /** @const {!Promise} */
+    var p1 = (
+      new Promise(
+        function (res, rej) {
+          fileReader.onload = (
+            function () {
+              /** @const {string} */
+              var result = /** @type {string} */(
+                fileReader.result
+              );
+              res(result);
+            }
+          );
+          fileReader.onerror = rej;
+        }
+      )
+    );
+
+    p1.then(
+      function /** !Promise<!ProjectService_PostWorkInterface> */ foo (/** string */ result) {
+        return this.projectService_.postWorks(result, title, categoryId);
+      }.bind(this)
+    ).then(
+      function foo (/** !ProjectService_PostWorkInterface */ work) {
+        /** @const {!Element} */
+        var gallery = (
+          Utils.getElement(
+            Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_GALLERY
+          )
+        );
+
+        /** @const {!Services.ProjectService.EntryItem} */
+        var entryItem = (
+          this.projectService_.createEntryItem(work)
+        );
+
+        /** @const {!WebComponents.GalleryItemComponent} */
+        var galleryItemElement = /** @type {!WebComponents.GalleryItemComponent} */(
+          entryItem.galleryItemElement
+        );
+
+        gallery.appendChild(galleryItemElement);
+
+        /** @const {!URL} */
+        var desiredUrl = new URL(Utils.me_().location.href);
+        desiredUrl.pathname = '/Homepage_edit_success';
+        this.routerService_.navigate(desiredUrl);
+      }.bind(this)
+    );
+  }
+);
+
+/**
+ * @this {!Containers.GalleryEditDialogContainer}
+ * @param {?Event} event
+ * @return {void}
+ * @private
+ */
+Containers.GalleryEditDialogContainer.onFormChange_ = (
+  function (event) {
+    /** @const {!HTMLFormElement} */
+    var addForm = /** @type {!HTMLFormElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_FORM
+      )
+    );
+
+    /** @const {!HTMLInputElement} */
+    var editConfirmBtn = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_GALLERY_EDIT_CONFIRM_BTN
+      )
+    );
+
+    /** @const {!URL} */
+    var desiredUrl = new URL(Utils.me_().location.href);
+
+    if (addForm.checkValidity()) {
+      desiredUrl.pathname = '/Homepage_edit_3';
+
+      editConfirmBtn.removeAttribute('disabled');
+    }
+    else {
+      desiredUrl.pathname = '/Homepage_edit_2';
+
+      editConfirmBtn.setAttribute('disabled', !addForm.checkValidity());
+    }
+
+    if (desiredUrl.pathname !== Utils.me_().location.pathname) {
+      this.routerService_.navigate(desiredUrl, true);
+      history.replaceState(void 0, '', desiredUrl.href);
+    }
   }
 );
 
@@ -150,12 +329,20 @@ Containers.GalleryEditDialogContainer.onFileReaderLoad_ = (
       this.fileReader_.result
     );
 
-    this.addFileContainer_.firstElementChild.style.display = 'none';
-    this.addFileContainer_.lastElementChild.style.display = '';
+    /** @const {!Element} */
+    var addFileContainer = (
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_FILE
+      )
+    );
+    addFileContainer.lastElementChild.previousElementSibling.style.display = 'none';
+    addFileContainer.lastElementChild.style.display = '';
 
     /** @const {!HTMLImageElement} */
     var imgElement = /** @type {!HTMLImageElement} */(
-      Utils.getElement('gallery-edit-img-preview')
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.GALLERY_EDIT_IMG_PREVIEW
+      )
     );
     imgElement.src = result;
   }
@@ -177,6 +364,9 @@ Containers.GalleryEditDialogContainer.onAttachProjectFile_ = (
     /** @const {!File} */
     var file = inputElement.files[0];
 
+    if (FileReader.LOADING === this.fileReader_.readyState) {
+      this.fileReader_.abort();
+    }
     this.fileReader_.readAsDataURL(file);
   }
 );
@@ -254,29 +444,97 @@ Containers.GalleryEditDialogContainer.onGalleryEditItemClick_ = (
  */
 Containers.GalleryEditDialogContainer.onGalleryAddEnter_ = (
   function (event) {
-    this.addFileContainer_.firstElementChild.style.display = '';
-    this.addFileContainer_.lastElementChild.style.display = 'none';
+    /** @const {!URL} */
+    var desiredUrl = (
+      new URL(
+        /** @type {!CustomEvent<!URL>} */(event).detail
+      )
+    );
+
+    /** @const {!HTMLSelectElement} */
+    var addCategory = /** @type {!HTMLSelectElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_CATEGORY
+      )
+    );
+
+    if ('/Homepage_edit_2' === desiredUrl.pathname) {
+      if ('/Homepage_edit_3' === Utils.me_().location.pathname) {
+        if (1 < addCategory.length) {
+          return;
+        }
+      }
+    }
+    else if ('/Homepage_edit_3' === desiredUrl.pathname) {
+      /** @const {!HTMLFormElement} */
+      var addForm = /** @type {!HTMLFormElement} */(
+        Utils.getElement(
+          Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_FORM
+        )
+      );
+
+      if (!addForm.checkValidity()) {
+        desiredUrl.pathname = '/Homepage_edit_2';
+        this.routerService_.navigate(desiredUrl, true);
+        history.replaceState(void 0, '', desiredUrl.href);
+      }
+      return;
+    }
+
+    /** @const {!HTMLInputElement} */
+    var editConfirmBtn = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_GALLERY_EDIT_CONFIRM_BTN
+      )
+    );
+    editConfirmBtn.setAttribute('disabled', true);
+
+    /** @const {!Element} */
+    var addFileContainer = (
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_FILE
+      )
+    );
+    addFileContainer.lastElementChild.previousElementSibling.style.display = '';
+    addFileContainer.lastElementChild.style.display = 'none';
 
     /** @const {!HTMLImageElement} */
     var imgElement = /** @type {!HTMLImageElement} */(
-      Utils.getElement('gallery-edit-img-preview')
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.GALLERY_EDIT_IMG_PREVIEW
+      )
     );
     imgElement.src = null;
 
-    this.attachProjectFile_.value = null;
+    /** @const {!HTMLInputElement} */
+    var attachProjectFile = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ATTACH_PROJECT_FILE
+      )
+    );
+    attachProjectFile.value = null;
 
-    this.addTitle_.value = '';
-    this.addCategory_.selectedIndex = 0;
+    /** @const {!HTMLInputElement} */
+    var addTitle = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_ADD_TITLE
+      )
+    );
+    addTitle.value = '';
 
-    while (1 < this.addCategory_.length) {
-      this.addCategory_.remove(1);
+    addCategory.selectedIndex = 0;
+
+    while (1 < addCategory.length) {
+      addCategory.remove(1);
     }
 
     this.galleryIsReady_.then(
       function () {
         /** @const {!Element} */
         var categoryCatalogue = (
-          Utils.getElement('portfolio-category-catalogue')
+          Utils.getElement(
+            Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_CATEGORY_CATALOGUE
+          )
         );
 
         var /** !NodeList<!Node> */ nodes = categoryCatalogue.childNodes;
@@ -290,6 +548,10 @@ Containers.GalleryEditDialogContainer.onGalleryAddEnter_ = (
               /** @const {number} */
               var categoryId = categoryFilter.getCategoryId();
 
+              if (0 === categoryId) {
+                continue;
+              }
+
               /** @const {string} */
               var categoryName = categoryFilter.getCategoryName();
 
@@ -299,7 +561,7 @@ Containers.GalleryEditDialogContainer.onGalleryAddEnter_ = (
               );
               optionElement.value = categoryId.toString();
               optionElement.text = categoryName;
-              this.addCategory_.add(optionElement);
+              addCategory.add(optionElement);
             }
           }
         } // </for>
@@ -319,7 +581,11 @@ Containers.GalleryEditDialogContainer.onGalleryEditEnter_ = (
     this.galleryIsReady_.then(
       function /** void */ foo() {
         /** @const {!Element} */
-        var galleryEditContent = this.galleryEditContent_;
+        var galleryEditContent = (
+          Utils.getElement(
+            Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_GALLERY_EDIT
+          )
+        );
 
         while (galleryEditContent.firstChild) {
           galleryEditContent.removeChild(galleryEditContent.firstChild);
@@ -353,6 +619,10 @@ Containers.GalleryEditDialogContainer.onGalleryEditEnter_ = (
  */
 Containers.GalleryEditDialogContainer.onDialogClose_ = (
   function (event) {
+    if ('/Homepage_edit_success' === Utils.me_().location.pathname) {
+      return;
+    }
+
     /** @const {!URL} */
     var desiredUrl = new URL(Utils.me_().location.href);
     desiredUrl.pathname = '/Homepage_edit';

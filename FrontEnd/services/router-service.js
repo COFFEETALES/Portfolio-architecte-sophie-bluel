@@ -17,16 +17,6 @@ Services.RouterService = (
     /** @const {!Element} */
     var mainElement = document.getElementsByTagName('main')[0];
 
-    /** @const {!XPathResult} */
-    var sections = (
-      Utils.xpathEvaluate(
-        document,
-        'xhtml:section | xhtml:dialog/xhtml:div/xhtml:section',
-        mainElement,
-        XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE
-      )
-    );
-
     /**
      * @const {!HTMLDialogElement}
      */
@@ -37,6 +27,16 @@ Services.RouterService = (
         mainElement,
         XPathResult.FIRST_ORDERED_NODE_TYPE
       ).singleNodeValue
+    );
+
+    /** @const {!XPathResult} */
+    var sections = (
+      Utils.xpathEvaluate(
+        document,
+        'xhtml:section | xhtml:dialog/xhtml:div/xhtml:section',
+        mainElement,
+        XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE
+      )
     );
 
     /**
@@ -132,7 +132,7 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
       this.apiService_.isLoggedIn() ? item.itemAuthPathNames : item.itemPathNames
     );
 
-    if (-1 !== currentPath.indexOf(url.pathname)) {
+    if (-1 !== currentPath.indexOf(desiredUrl.pathname)) {
       targetViews[targetViews.length] = item.itemName;
     }
   }
@@ -141,11 +141,11 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
     targetViews[targetViews.length] = 'introduction';
   }
 
-  /** @const {!Event} */
-  var leaveEvent = new Event('leave');
+  /** @const {!CustomEvent<!URL>} */
+  var leaveEvent = new CustomEvent('leave', {detail: desiredUrl});
 
-  /** @const {!Event} */
-  var enterEvent = new Event('enter');
+  /** @const {!CustomEvent<!URL>} */
+  var enterEvent = new CustomEvent('enter', {detail: desiredUrl});
 
   /** @type {!Element} */
   var elem;
@@ -191,7 +191,7 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
   }
 
   if (!opt_isPopState) {
-    history.pushState({}, '', desiredUrl);
+    history.pushState(void 0, '', desiredUrl);
   }
 };
 

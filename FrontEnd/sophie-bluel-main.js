@@ -9,10 +9,11 @@ var ServerHost = 'http://localhost:5678';
 /**
  * @typedef {
  *  {
- *   GET_WORKS: string,
+ *   DELETE_WORKS: string,
  *   GET_CATEGORIES: string,
+ *   GET_WORKS: string,
  *   POST_USERS_LOGIN: string,
- *   DELETE_WORKS: string
+ *   POST_WORKS: string
  *  }
  * }
  */
@@ -23,10 +24,11 @@ var HttpEndpointsInterface;
  * @const {HttpEndpointsInterface!}
  */
 var HttpEndpoints = {
-  GET_WORKS: [ServerHost, 'api', 'works'].join('/'),
+  DELETE_WORKS: [ServerHost, 'api', 'works'].join('/'),
   GET_CATEGORIES: [ServerHost, 'api', 'categories'].join('/'),
+  GET_WORKS: [ServerHost, 'api', 'works'].join('/'),
   POST_USERS_LOGIN: [ServerHost, 'api', 'users', 'login'].join('/'),
-  DELETE_WORKS: [ServerHost, 'api', 'works'].join('/')
+  POST_WORKS: [ServerHost, 'api', 'works'].join('/')
 };
 
 /**
@@ -68,23 +70,24 @@ var SophieBluel = (
       Utils.getElement('anchor-project-edit')
     );
 
-    nav.onclick = projectEdit.onclick = SophieBluel.onNavClick_.bind(this);
-
     /** @const {!HTMLFormElement} */
     var loginForm = /** @type {!HTMLFormElement} */(
       Utils.getElement('form-login')
     );
-    loginForm.onsubmit = SophieBluel.onLoginSumbit_.bind(this);
 
     /** @const {!HTMLAnchorElement} */
     var loginLink = /** @type {!HTMLAnchorElement} */(
       Utils.getElement('anchor-login')
     );
-    loginLink.onclick = SophieBluel.onNavLoginClick_.bind(this);
-
 
     /** @const {!Containers.GalleryContainer} */
     var gallery = new Containers.GalleryContainer;
+
+    nav.onclick = projectEdit.onclick = SophieBluel.onNavClick_.bind(this);
+
+    loginForm.onsubmit = SophieBluel.onLoginSumbit_.bind(this);
+
+    loginLink.onclick = SophieBluel.onNavLoginClick_.bind(this);
 
     ///** @const {!Containers.GalleryEditDialogContainer} */
     //var galleryEditDialogContainer = new Containers.GalleryEditDialogContainer;

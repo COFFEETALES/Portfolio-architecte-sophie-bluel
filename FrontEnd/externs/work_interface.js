@@ -25,3 +25,15 @@ var ProjectService_CategoryInterface;
 */
 var ProjectService_WorkInterface;
 
+/**
+* @typedef {
+*  {
+*   id: number,
+*   title: string,
+*   imageUrl: string,
+*   categoryId: number
+*  }
+* }
+*/
+var ProjectService_PostWorkInterface;
+

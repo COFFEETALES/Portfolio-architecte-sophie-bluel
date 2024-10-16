@@ -44,18 +44,21 @@ Services.ApiService.prototype.isLoggedIn = (
 /**
  * @param {string} method
  * @param {string} url
- * @param {string=} data
+ * @param {(string|!FormData)=} data
  * @return {!Promise<!Response>}
  */
 Services.ApiService.prototype.request = (
   function (method, url, data) {
-
     /**
      * @const {!Object<string, string>}
      */
     var headers = {
-      'Content-Type': 'application/json'
+      'Accept': '*/*'
     };
+
+    if ('string' === typeof data) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     if (this.currentToken_) {
       headers['X-Auth-User'] = this.currentUserId_.toString();

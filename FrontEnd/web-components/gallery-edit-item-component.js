@@ -9,16 +9,16 @@
  */
 WebComponents.GalleryEditItemComponent = (
   function () {
-    /** @const {!WebComponents.GalleryEditItemComponent} */
-    var retVal = /** @type {!WebComponents.GalleryEditItemComponent} */(
-      Utils.WebComponent.make(WebComponents.GalleryEditItemComponent, '//bluel:gallery-edit-item-template[1]')
-    );
-
     /**
      * @const {!HTMLInputElement}
      * @private
      */
     this.inputElement_;
+
+    /** @const {!WebComponents.GalleryEditItemComponent} */
+    var retVal = /** @type {!WebComponents.GalleryEditItemComponent} */(
+      Utils.WebComponent.make(WebComponents.GalleryEditItemComponent, '//bluel:gallery-edit-item-template[1]')
+    );
 
     retVal.inputElement_ = /** @type {!HTMLInputElement} */(
       retVal.documentElement_.querySelector('input[type="button"]')

@@ -19,33 +19,45 @@ Containers.GalleryContainer = (
      */
     this.projectService_ = Services.ProjectService.getInstance();
 
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.categoryCatalogueElement_ = Utils.getElement('portfolio-category-catalogue');
+    /** @const {!Element} */
+    var categoryCatalogueElement = (
+      Utils.getElement(
+        Containers.GalleryContainer.elementIds_.PORTFOLIO_CATEGORY_CATALOGUE
+      )
+    );
 
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.galleryElement_ = Utils.getElement('portfolio-gallery');
+    /** @const {!Element} */
+    var portfolioElement = (
+      Utils.getElement(
+        Containers.GalleryContainer.elementIds_.PORTFOLIO
+      )
+    );
 
-    this.categoryCatalogueElement_.addEventListener(
+    categoryCatalogueElement.addEventListener(
       'categoryFilterChange', Containers.GalleryContainer.updateGalleryDisplay_.bind(this)
     );
 
-    /**
-     * @const {!Element}
-     * @private
-     */
-    this.portfolioElement_ = Utils.getElement('portfolio');
-
-    this.portfolioElement_.addEventListener(
+    portfolioElement.addEventListener(
       'enter', Containers.GalleryContainer.onEnter_.bind(this)
     );
   }
 );
+
+/**
+ * @const {
+ *  {
+ *   PORTFOLIO: string,
+ *   PORTFOLIO_GALLERY: string,
+ *   PORTFOLIO_CATEGORY_CATALOGUE: string
+ *  }
+ * }
+ * @private
+ */
+Containers.GalleryContainer.elementIds_ = {
+  PORTFOLIO: 'portfolio',
+  PORTFOLIO_GALLERY: 'portfolio-gallery',
+  PORTFOLIO_CATEGORY_CATALOGUE: 'portfolio-category-catalogue'
+};
 
 /**
  * @return {!Promise<void>}
@@ -53,7 +65,11 @@ Containers.GalleryContainer = (
 Containers.GalleryContainer.prototype.loadCategories = (
   function () {
     /** @const {!Element} */
-    var categoryCatalogue = this.categoryCatalogueElement_;
+    var categoryCatalogue = (
+      Utils.getElement(
+        Containers.GalleryContainer.elementIds_.PORTFOLIO_CATEGORY_CATALOGUE
+      )
+    );
 
     while (categoryCatalogue.firstChild) {
       categoryCatalogue.removeChild(categoryCatalogue.firstChild);
@@ -102,7 +118,11 @@ Containers.GalleryContainer.prototype.loadCategories = (
 Containers.GalleryContainer.prototype.loadGallery = (
   function () {
     /** @const {!Element} */
-    var gallery = this.galleryElement_;
+    var gallery = (
+      Utils.getElement(
+        Containers.GalleryContainer.elementIds_.PORTFOLIO_GALLERY
+      )
+    );
 
     while (gallery.firstChild) {
       gallery.removeChild(gallery.firstChild);
@@ -165,7 +185,11 @@ Containers.GalleryContainer.onEnter_ = (
     var /** @type {number} */ n;
 
     /** @const {!Element} */
-    var categoryCatalogue = this.categoryCatalogueElement_;
+    var categoryCatalogue = (
+      Utils.getElement(
+        Containers.GalleryContainer.elementIds_.PORTFOLIO_CATEGORY_CATALOGUE
+      )
+    );
 
     /** @const {!Array<number>} */
     var displayedCategories = [];
@@ -227,7 +251,11 @@ Containers.GalleryContainer.updateGalleryDisplay_ = (
     var customEvent = /** @type {!CustomEvent<!WebComponents.CategoryFilterComponent>} */(event);
 
     /** @const {!Element} */
-    var categoryCatalogue = this.categoryCatalogueElement_;
+    var categoryCatalogue = (
+      Utils.getElement(
+        Containers.GalleryContainer.elementIds_.PORTFOLIO_CATEGORY_CATALOGUE
+      )
+    );
 
 
     /** @const {!WebComponents.CategoryFilterComponent} */

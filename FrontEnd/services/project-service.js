@@ -96,7 +96,7 @@ Services.ProjectService.prototype.getEntryItemCount = (
 
 /**
  * @return {!Services.ProjectService.EntryItem}
- * @param {!ProjectService_WorkInterface} work
+ * @param {!ProjectService_WorkInterface|!ProjectService_PostWorkInterface} work
  */
 Services.ProjectService.prototype.createEntryItem = (
   function (work) {
@@ -173,9 +173,44 @@ Services.ProjectService.processJson_ = (
 Services.ProjectService.prototype.getCategories = (
   function () {
     return (
-      (this.apiService_.request('GET', HttpEndpoints.GET_CATEGORIES)).then(
+      this.apiService_.request('GET', HttpEndpoints.GET_CATEGORIES).then(
         function (response) {
           return response.json();
+        }
+      )
+    );
+  }
+);
+
+/**
+ * @return {
+ *  !Promise<
+ *   !ProjectService_PostWorkInterface
+ *  >
+ * }
+ * @param {string} image
+ * @param {string} title
+ * @param {number} category
+ */
+Services.ProjectService.prototype.postWorks = (
+  function (image, title, category) {
+    /** @const {!FormData} */
+    var formData = new FormData();
+    formData.append('image', image);
+    formData.append('title', title);
+    formData.append('category', category.toString(10));
+
+    return (
+      this.apiService_.request(
+        'POST', HttpEndpoints.POST_WORKS, formData
+      ).then(
+        function (response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw Error(
+            ['[', response.status, ']', ' ', response.statusText].join('')
+          );
         }
       )
     );
@@ -193,7 +228,7 @@ Services.ProjectService.prototype.getCategories = (
 Services.ProjectService.prototype.deleteWorks = (
   function (id) {
     return (
-      (this.apiService_.request('DELETE', [HttpEndpoints.DELETE_WORKS, id].join('/'))).then(
+      this.apiService_.request('DELETE', [HttpEndpoints.DELETE_WORKS, id].join('/')).then(
         function (response) {
           if (response.ok) {
             return;
@@ -219,7 +254,7 @@ Services.ProjectService.prototype.deleteWorks = (
 Services.ProjectService.prototype.getProjects = (
   function () {
     return (
-      (this.apiService_.request('GET', HttpEndpoints.GET_WORKS)).then(
+      this.apiService_.request('GET', HttpEndpoints.GET_WORKS).then(
         function (response) {
           return response.json();
         }
