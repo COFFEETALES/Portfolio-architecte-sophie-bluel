@@ -208,9 +208,13 @@ Services.ProjectService.prototype.postWorks = (
           if (response.ok) {
             return response.json();
           }
-          throw Error(
+          console.error(
             ['[', response.status, ']', ' ', response.statusText].join('')
           );
+          /** @const {!Services.MessageService} */
+          var messageService = Services.MessageService.getInstance();
+          messageService.show('Erreur inattendue', 'Une erreur inattendue est survenue.');
+          throw new Utils.UnexpectedError();
         }
       )
     );
@@ -233,9 +237,13 @@ Services.ProjectService.prototype.deleteWorks = (
           if (response.ok) {
             return;
           }
-          throw Error(
+          console.error(
             ['[', response.status, ']', ' ', response.statusText].join('')
           );
+          /** @const {!Services.MessageService} */
+          var messageService = Services.MessageService.getInstance();
+          messageService.show('Erreur inattendue', 'Une erreur inattendue est survenue.');
+          throw new Utils.UnexpectedError();
         }
       )
     );
@@ -256,7 +264,9 @@ Services.ProjectService.prototype.getProjects = (
     return (
       this.apiService_.request('GET', HttpEndpoints.GET_WORKS).then(
         function (response) {
-          return response.json();
+          if (response.ok) {
+            return response.json();
+          }
         }
       ).then(
         Services.ProjectService.processJson_.bind(this)

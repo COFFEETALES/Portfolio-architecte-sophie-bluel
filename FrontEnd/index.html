@@ -16,6 +16,7 @@
 	<script type="application/javascript" src="utils/dom-utils.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="utils/web-component.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/api-service.js" charset="UTF-8" defer></script>
+	<script type="application/javascript" src="services/message-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/project-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="services/router-service.js" charset="UTF-8" defer></script>
 	<script type="application/javascript" src="web-components/category-filter-component.js" charset="UTF-8" defer></script>
@@ -38,7 +39,7 @@
 		<nav id="header-navigation-bar">
 			<ul>
 				<li><a href="/Homepage" data-auth-href="/Homepage_edit" onclick="event.preventDefault();" id="anchor-projects">projets</a></li>
-				<li><a href="/Contact" data-auth-href="/Contact" onclick="event.preventDefault();">contact</a></li>
+				<li><a href="/Contact" data-auth-href="/Contact" onclick="event.preventDefault();" id="anchor-contact">contact</a></li>
 				<li><a href="/Login" onclick="event.preventDefault();" id="anchor-login"><span>login / logout</span></a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
@@ -62,11 +63,11 @@
 		<form action="#" autocomplete="off" id="form-login" onsubmit="event.preventDefault();">
 			<div>
 				<label for="email">E-mail</label>
-				<input autocomplete="off" id="login-email" name="login-email" required type="email" value="sophie.bluel@test.tld"/>
+				<input autocomplete="off" id="login-email" name="login-email" required type="email"/>
 			</div>
 			<div>
 				<label for="password">Mot de passe</label>
-				<input autocomplete="off" id="login-password" name="login-password" required type="password" value="S0phie"/>
+				<input autocomplete="off" id="login-password" name="login-password" required type="password"/>
 			</div>
 			<div style="text-align: center; margin: 3em auto;">
 				<input id="login-submit" type="submit" value="Se connecter"/>
@@ -151,6 +152,22 @@
 				</form>
 			</section>
 		</div>
+	</dialog>
+	<dialog id="dialog-message-box">
+		<form method="dialog">
+			<div>
+				<div id="dialog-message-box-icon-warning">
+					<svg width="128px" height="128px" viewBox="0 0 24 24"><path d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z" fill="#ddd"></path></svg>
+				</div>
+				<div id="dialog-message-box-content">
+					<h1><!-- --></h1>
+					<p><!-- --></p>
+				</div>
+			</div>
+			<div style="position: absolute; text-align: center; width: 100%;">
+				<input type="submit" value="OK"/>
+			</div>
+		</form>
 	</dialog>
 </main>
 <footer>

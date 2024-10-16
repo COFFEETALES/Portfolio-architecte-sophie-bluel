@@ -14,6 +14,12 @@ Services.RouterService = (
      */
     this.apiService_ = Services.ApiService.getInstance();
 
+    /**
+     * @const {!Services.MessageService}
+     * @private
+     */
+    this.messageService_ = Services.MessageService.getInstance();
+
     /** @const {!Element} */
     var mainElement = document.getElementsByTagName('main')[0];
 
@@ -114,6 +120,35 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
   if ('/' === url.pathname) {
     url.pathname = this.apiService_.isLoggedIn() ? '/Homepage_edit' : '/Homepage';
   }
+
+  /** @const {!HTMLAnchorElement} */
+  var portfolioLink = /** @type {!HTMLAnchorElement} */(
+    Utils.getElement('anchor-projects')
+  );
+
+  /** @const {!HTMLAnchorElement} */
+  var contactLink = /** @type {!HTMLAnchorElement} */(
+    Utils.getElement('anchor-contact')
+  );
+
+  /** @const {!HTMLAnchorElement} */
+  var loginLink = /** @type {!HTMLAnchorElement} */(
+    Utils.getElement('anchor-login')
+  );
+
+  portfolioLink.className = contactLink.className = loginLink.className = null;
+
+  if (url.pathname.startsWith('/Homepage')) {
+    portfolioLink.className = 'bolder';
+  }
+  else if (url.pathname.startsWith('/Contact')) {
+    contactLink.className = 'bolder';
+  }
+  else if (url.pathname.startsWith('/Login')) {
+    loginLink.className = 'bolder';
+  }
+
+  this.messageService_.close();
 
   /** @const {!URL} */
   var desiredUrl = url;

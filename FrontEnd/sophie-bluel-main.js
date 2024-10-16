@@ -59,6 +59,12 @@ var SophieBluel = (
      */
     this.routerService_ = Services.RouterService.getInstance();
 
+    /**
+     * @const {!Services.MessageService}
+     * @private
+     */
+    this.messageService_ = Services.MessageService.getInstance();
+
 
     /** @const {!HTMLElement} */
     var nav = /** @type {!HTMLElement} */(
@@ -165,9 +171,21 @@ SophieBluel.onLoginSumbit_ = function (event) {
       portfolioLink.click();
     }
   ).catch(
-    function (error) {
-      console.error(error);
-    }
+    /** @type {function(*):void} */(
+      function /** void */ foo (/** !Error */ error) {
+        /** @const {!Error} */
+        var argError = /** @type {!Error} */(
+          error
+        );
+        console.error(argError);
+        if (argError instanceof Utils.AuthenticationError) {
+          this.messageService_.show('Erreur d\'authentification', 'Merci de vérifier vos coordonnées d\'accès.');
+        }
+        else {
+          this.messageService_.show('Erreur inattendue', 'Une erreur inattendue est survenue. Il pourrait s\'agir d\'un problème de connexion.');
+        }
+      }.bind(this)
+    )
   ).then(
     function () {
       submitButton.removeAttribute('disabled');

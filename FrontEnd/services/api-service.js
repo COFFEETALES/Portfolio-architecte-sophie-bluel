@@ -101,7 +101,10 @@ Services.ApiService.prototype.login = (
       ).then(
         function (response) {
           if (!response.ok) {
-            throw Error('Login failed.');
+            if (response.status === 401) {
+              throw new Utils.AuthenticationError();
+            }
+            throw new Utils.UnexpectedError();
           }
           return response.json();
         }

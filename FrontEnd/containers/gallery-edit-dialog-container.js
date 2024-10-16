@@ -100,7 +100,7 @@ Containers.GalleryEditDialogContainer = (
     );
 
     this.dialogElement_.onmousedown = (
-      Containers.GalleryEditDialogContainer.onDialogClick_.bind(this)
+      Utils.handleClickOutside
     );
 
     attachProjectFile.onchange = (
@@ -194,6 +194,14 @@ Containers.GalleryEditDialogContainer.elementIds_ = {
 Containers.GalleryEditDialogContainer.onFormSubmit_ = (
   function (event) {
     event.preventDefault();
+
+    /** @const {!HTMLInputElement} */
+    var editConfirmBtn = /** @type {!HTMLInputElement} */(
+      Utils.getElement(
+        Containers.GalleryEditDialogContainer.elementIds_.PORTFOLIO_GALLERY_EDIT_CONFIRM_BTN
+      )
+    );
+    editConfirmBtn.setAttribute('disabled', true);
 
     /** @const {!HTMLFormControlsCollection} */
     var formControls = /** @type {!HTMLFormControlsCollection} */(
@@ -630,27 +638,3 @@ Containers.GalleryEditDialogContainer.onDialogClose_ = (
   }
 );
 
-/**
- * @this {!Containers.GalleryEditDialogContainer}
- * @param {!Event|null} event
- * @return {void}
- * @private
- */
-Containers.GalleryEditDialogContainer.onDialogClick_ = (
-  function (event) {
-    /** @type {?Node} */
-    var nodeElement = /** @type {?Node} */(event.target);
-
-    /** @type {!Element} */
-    var firstElement = /** @type {!Element} */(this.dialogElement_.firstElementChild);
-
-    do {
-      if (firstElement === nodeElement) {
-        return;
-      }
-    }
-    while (nodeElement = nodeElement.parentNode);
-
-    this.dialogElement_.close();
-  }
-);
