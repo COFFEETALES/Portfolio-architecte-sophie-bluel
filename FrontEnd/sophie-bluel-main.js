@@ -86,12 +86,10 @@ var SophieBluel = (
     /** @const {!Containers.GalleryContainer} */
     var gallery = new Containers.GalleryContainer;
 
-    gallery.loadCategories();
-
     ///** @const {!Containers.GalleryEditDialogContainer} */
     //var galleryEditDialogContainer = new Containers.GalleryEditDialogContainer;
     new Containers.GalleryEditDialogContainer(
-      gallery.loadGallery()
+      gallery.loadGallery(), gallery.loadCategories()
     );
 
     this.routerService_.navigate(new URL(Utils.me_().location.href), true);

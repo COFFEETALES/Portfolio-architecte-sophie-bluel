@@ -48,7 +48,7 @@ Containers.GalleryContainer = (
 );
 
 /**
- * @return {void}
+ * @return {!Promise<void>}
  */
 Containers.GalleryContainer.prototype.loadCategories = (
   function () {
@@ -61,35 +61,37 @@ Containers.GalleryContainer.prototype.loadCategories = (
 
     /** @const {!Promise<!Array<!ProjectService_CategoryInterface>>} */
     var p1 = this.projectService_.getCategories();
-    p1.then(
-      function (/** !Array<!ProjectService_CategoryInterface> */arg1) {
-        if (!Array.isArray(arg1)) {
-          throw Error('');
-        }
+    return (
+      p1.then(
+        function (/** !Array<!ProjectService_CategoryInterface> */arg1) {
+          if (!Array.isArray(arg1)) {
+            throw Error('');
+          }
 
-        arg1.unshift(
-          /** @type {!ProjectService_CategoryInterface} */(
-            {id: 0, name: 'Tous'}
-          )
-        );
-
-        for (var /** number */ i = 0, /** number */ length = arg1.length ; i !== length ; ++i) {
-          /**
-           * @const {!ProjectService_CategoryInterface}
-           */
-          var item = arg1[i];
-
-          /** @const {!WebComponents.CategoryFilterComponent} */
-          var categoryFilter = /** @type {!WebComponents.CategoryFilterComponent} */(
-            document.createElement('category-filter')
+          arg1.unshift(
+            /** @type {!ProjectService_CategoryInterface} */(
+              {id: 0, name: 'Tous'}
+            )
           );
 
-          categoryFilter.setAttribute('category-id', item.id);
-          categoryFilter.setAttribute('category-name', item.name);
-          categoryCatalogue.appendChild(categoryFilter);
-          categoryFilter.setChecked(true);
+          for (var /** number */ i = 0, /** number */ length = arg1.length ; i !== length ; ++i) {
+            /**
+             * @const {!ProjectService_CategoryInterface}
+             */
+            var item = arg1[i];
+
+            /** @const {!WebComponents.CategoryFilterComponent} */
+            var categoryFilter = /** @type {!WebComponents.CategoryFilterComponent} */(
+              document.createElement('category-filter')
+            );
+
+            categoryFilter.setAttribute('category-id', item.id);
+            categoryFilter.setAttribute('category-name', item.name);
+            categoryCatalogue.appendChild(categoryFilter);
+            categoryFilter.setChecked(true);
+          }
         }
-      }
+      )
     );
   }
 );

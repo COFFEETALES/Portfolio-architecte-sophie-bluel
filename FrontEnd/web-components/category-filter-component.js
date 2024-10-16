@@ -25,6 +25,15 @@ WebComponents.CategoryFilterComponent.prototype.getCategoryId = (
 );
 
 /**
+ * @return {string}
+ */
+WebComponents.CategoryFilterComponent.prototype.getCategoryName = (
+  function () {
+    return this.getAttribute('category-name');
+  }
+);
+
+/**
  * @return {boolean}
  */
 WebComponents.CategoryFilterComponent.prototype.isChecked = (
@@ -80,16 +89,13 @@ WebComponents.CategoryFilterComponent.prototype.onCheckboxChange = (
  */
 WebComponents.CategoryFilterComponent.prototype.connectedCallback = (
   function () {
-    /** @const {!HTMLElement} */
-    var htmlElement = this;
-
     /** @const {!HTMLInputElement} */
     var checkboxElement = /** @type {!HTMLInputElement} */(
       this.documentElement_
     );
 
     checkboxElement.dataset['categoryName'] = (
-      htmlElement.getAttribute('category-name')
+      this.getCategoryName()
     );
 
     checkboxElement.onchange = this.onCheckboxChange.bind(this);

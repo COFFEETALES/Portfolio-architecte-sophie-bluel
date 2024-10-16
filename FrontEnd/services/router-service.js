@@ -153,7 +153,7 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
   for (i = 0, n = this.sectionItems_.length ; i !== n ; ++i) {
     item = this.sectionItems_[i];
 
-    /** @const {string} */
+    /** @type {string} */
     var itemName = item.itemName;
 
     elem = Utils.getElement(itemName);
@@ -172,6 +172,8 @@ Services.RouterService.prototype.navigate = function (url, opt_isPopState) {
 
   for (i = 0, n = this.sectionItems_.length ; i !== n ; ++i) {
     item = this.sectionItems_[i];
+
+    itemName = item.itemName;
 
     if (item.withinDialog && -1 !== targetViews.indexOf(itemName)) {
       elem = Utils.getElement(item.itemName);

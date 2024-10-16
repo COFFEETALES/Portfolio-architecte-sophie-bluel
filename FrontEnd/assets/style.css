@@ -194,12 +194,22 @@ li:hover {
 	flex-direction: column;
 }
 
+div.portfolio-form-field input,
+div.portfolio-form-field select,
 #login input,
 #contact input {
-	height: 50px;
-	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	font-size: 1.2em;
+	height: 50px;
+}
+div.portfolio-form-field input[type="text"],
+#login input[type="text"],
+#contact input[type="text"] {
+	padding: 0 12px;
+}
+div.portfolio-form-field select {
+	background-color: #FFF;
 }
 #login label,
 #contact label {
@@ -365,10 +375,17 @@ main > dialog:first-of-type {
 	overflow: hidden;
 	padding: 0;
 }
+main > dialog:first-of-type::backdrop {
+	background: rgba(0, 0, 0, .40);
+}
 main > dialog:first-of-type > div:first-of-type {
 	background-color: #fff;
 	border-radius: 20px;
 	border: 0;
+	display: flex;
+	flex-direction: column;
+	height: 720px;
+	width: 640px;
 }
 main > dialog:first-of-type div.header:first-of-type {
 	box-sizing: border-box;
@@ -376,22 +393,22 @@ main > dialog:first-of-type div.header:first-of-type {
 	justify-content: space-between;
 	padding: 40px 30px 0 30px;
 }
-main > dialog:first-of-type::backdrop {
-	background: rgba(0, 0, 0, .40);
-}
 main > dialog:first-of-type a.dialog-sys-btn {
 	padding: 10px;
 }
 main > dialog:first-of-type section {
 	display: flex;
+	flex-basis: auto;
 	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 0;
 }
 main > dialog:first-of-type section .dialog-body {
 	flex-basis: auto;
 	flex-grow: 1;
 	flex-shrink: 1;
 }
-main > dialog:first-of-type section .dialog-body#portfolio-gallery-edit-content {
+main > dialog:first-of-type section .dialog-body#portfolio-gallery-edit {
 	align-content: flex-start;
 	display: flex;
 	flex-direction: row;
@@ -399,9 +416,22 @@ main > dialog:first-of-type section .dialog-body#portfolio-gallery-edit-content 
 	gap: 10px;
 	padding: 40px 80px;
 }
-main > dialog:first-of-type section .dialog-body#portfolio-gallery-edit-content gallery-edit-item {
+section#portfolio-edit .dialog-body gallery-edit-item {
 	width: calc(1.0 / 5.0 * 100% - 10px);
 	height: 116px;
+}
+section#portfolio-add .dialog-body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px 80px;
+}
+section#portfolio-add form {
+	display: flex;
+	flex-basis: auto;
+	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 0;
 }
 main > dialog:first-of-type section .dialog-footer {
 	text-align: center;
@@ -422,10 +452,71 @@ main > dialog:first-of-type h2 {
 	line-height: 30px;
 	text-align: center;
 }
-#portfolio-gallery-edit {
-	height: 680px;
-	width: 640px;
+#portfolio-add-file {
+	background: #E8F1F7;
+	border-radius: 3px;
+	height: 180px;
+	width: 100%;
+	position: relative;
 }
-#gallery-edit-add-btn::after {
-	content: 'test';
+#portfolio-add-file > div:first-of-type {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	height: 100%;
+	justify-content: center;
 }
+#portfolio-add-file > div:last-of-type {
+	height: 100%;
+	text-align: center;
+}
+#portfolio-add-file > div:last-of-type img:first-of-type {
+  object-fit: scale-down;
+  height: inherit;
+}
+label#gallery-edit-img-btn-1,
+label#gallery-edit-img-btn-2 {
+	cursor: pointer;
+}
+label#gallery-edit-img-btn-1 > input[type="button"] {
+	background: #CBD6DC;
+	color: #306685;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 550;
+	height: 46px;
+	pointer-events: none;
+}
+label#gallery-edit-img-btn-2 {
+	display: block;
+	height: inherit;
+}
+#portfolio-add-file input[type="file"] {
+	-moz-appearance: none;
+	appearance: none;
+	display: block;
+	font-size: 0;
+	height: 100%;
+	pointer-events: none;
+	position: absolute;
+	width: 100%;
+}
+#portfolio-add-file input[type="file"]::file-selector-button {
+	display: none;
+}
+div.portfolio-form-field {
+	display: flex;
+	flex-direction: column;
+	margin: 8px 0;
+	width: calc(100% - 4px);
+}
+div.portfolio-form-field label {
+	color: #3D3D3D;
+	display: block;
+	font-family: 'Work Sans';
+	font-size: 1.2em;
+	font-weight: 550;
+	margin: 10px 0;
+}
+

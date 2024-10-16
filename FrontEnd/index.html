@@ -46,7 +46,7 @@
 	</div>
 </header>
 <main>
-	<section id="introduction" data-auth-path="/Homepage_edit, /Homepage_edit_1" data-path="/Homepage" style="display: none">
+	<section id="introduction" data-auth-path="/Homepage_edit, /Homepage_edit_1, /Homepage_edit_2" data-path="/Homepage" style="display: none">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
 		</figure>
@@ -74,12 +74,12 @@
 			<a href="#" onclick="event.preventDefault();">Mot de passe oublié ?</a>
 		</form>
 	</section>
-	<section id="portfolio" data-auth-path="/Homepage_edit, /Homepage_edit_1" data-path="/Homepage" style="display: none">
+	<section id="portfolio" data-auth-path="/Homepage_edit, /Homepage_edit_1, /Homepage_edit_2" data-path="/Homepage" style="display: none">
 		<h2 id="h2-my-projects">Mes Projets</h2><a class="auth-logged-in edit-icon" data-auth-href="/Homepage_edit_1" href="#" id="anchor-project-edit" onclick="event.preventDefault();">Modifier</a>
 		<div class="auth-logged-out category-catalogue" id="portfolio-category-catalogue"><!-- --></div>
 		<div class="gallery" id="portfolio-gallery"><!-- --></div>
 	</section>
-	<section id="contact" data-auth-path="/Homepage_edit, /Homepage_edit_1, /Contact" data-path="/Homepage, /Contact" style="display: none">
+	<section id="contact" data-auth-path="/Homepage_edit, /Homepage_edit_1, /Homepage_edit_2, /Contact" data-path="/Homepage, /Contact" style="display: none">
 		<h2>Contact</h2>
 		<p>Vous avez un projet ? Discutons-en !</p>
 		<form action="#" method="post">
@@ -104,14 +104,51 @@
 					<svg width="18" height="18" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.6546 2.05106C12.1235 1.58214 12.1235 0.820611 11.6546 0.351691C11.1856 -0.11723 10.4241 -0.11723 9.95519 0.351691L6.005 4.30563L2.05106 0.355442C1.58214 -0.113479 0.820611 -0.113479 0.351691 0.355442C-0.11723 0.824363 -0.11723 1.58589 0.351691 2.05481L4.30563 6.005L0.355442 9.95894C-0.113479 10.4279 -0.113479 11.1894 0.355442 11.6583C0.824363 12.1272 1.58589 12.1272 2.05481 11.6583L6.005 7.70437L9.95894 11.6546C10.4279 12.1235 11.1894 12.1235 11.6583 11.6546C12.1272 11.1856 12.1272 10.4241 11.6583 9.95519L7.70437 6.005L11.6546 2.05106Z" fill="black"/></svg>
 				</a>
 			</div>
-			<section id="portfolio-gallery-edit" data-auth-path="/Homepage_edit_1" style="display: none">
+			<section id="portfolio-edit" data-auth-path="/Homepage_edit_1" style="display: none">
 				<h2>Galerie photo</h2>
-				<div id="portfolio-gallery-edit-content" class="dialog-body"><!-- --></div>
+				<div id="portfolio-gallery-edit" class="dialog-body"><!-- --></div>
 				<div class="dialog-footer">
 					<div style="text-align: center; padding: 3em 0;">
 						<input type="button" id="gallery-edit-add-btn" value="Ajouter une photo"/>
 					</div>
 				</div>
+			</section>
+			<section id="portfolio-add" data-auth-path="/Homepage_edit_2" style="display: none">
+				<h2>Ajout photo</h2>
+				<form>
+					<div class="dialog-body">
+						<div id="portfolio-add-file">
+							<div>
+								<svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M63.5517 15.8879C64.7228 15.8879 65.681 16.8461 65.681 18.0172V60.5768L65.0156 59.7118L46.9165 36.2894C46.3176 35.5042 45.3727 35.0517 44.3879 35.0517C43.4031 35.0517 42.4715 35.5042 41.8594 36.2894L30.8136 50.5824L26.7546 44.8998C26.1557 44.0614 25.1975 43.569 24.1595 43.569C23.1214 43.569 22.1632 44.0614 21.5644 44.9131L10.9178 59.8183L10.319 60.6434V60.6034V18.0172C10.319 16.8461 11.2772 15.8879 12.4483 15.8879H63.5517ZM12.4483 9.5C7.75048 9.5 3.93103 13.3195 3.93103 18.0172V60.6034C3.93103 65.3012 7.75048 69.1207 12.4483 69.1207H63.5517C68.2495 69.1207 72.069 65.3012 72.069 60.6034V18.0172C72.069 13.3195 68.2495 9.5 63.5517 9.5H12.4483ZM23.0948 35.0517C23.9337 35.0517 24.7644 34.8865 25.5394 34.5655C26.3144 34.2444 27.0186 33.7739 27.6118 33.1807C28.2049 32.5876 28.6755 31.8834 28.9965 31.1083C29.3175 30.3333 29.4828 29.5027 29.4828 28.6638C29.4828 27.8249 29.3175 26.9943 28.9965 26.2192C28.6755 25.4442 28.2049 24.74 27.6118 24.1468C27.0186 23.5537 26.3144 23.0831 25.5394 22.7621C24.7644 22.4411 23.9337 22.2759 23.0948 22.2759C22.2559 22.2759 21.4253 22.4411 20.6503 22.7621C19.8752 23.0831 19.171 23.5537 18.5779 24.1468C17.9847 24.74 17.5142 25.4442 17.1931 26.2192C16.8721 26.9943 16.7069 27.8249 16.7069 28.6638C16.7069 29.5027 16.8721 30.3333 17.1931 31.1083C17.5142 31.8834 17.9847 32.5876 18.5779 33.1807C19.171 33.7739 19.8752 34.2444 20.6503 34.5655C21.4253 34.8865 22.2559 35.0517 23.0948 35.0517Z" fill="#B9C5CC"/></svg>
+								<label id="gallery-edit-img-btn-1" for="portfolio-attach-project-file">
+									<input type="button" value="+ Ajouter photo" tabindex="-1"/>
+								</label>
+								<div>jpg, png : 4mo max</div>
+								<input name="image" accept="image/png, image/jpeg" id="portfolio-attach-project-file" type="file"/>
+							</div>
+							<div>
+								<label id="gallery-edit-img-btn-2" for="portfolio-attach-project-file">
+									<img id="gallery-edit-img-preview" src="" alt=""/>
+								</label>
+							</div>
+						</div>
+						<div class="portfolio-form-field">
+							<label for="portfolio-add-title">Titre</label>
+							<input id="portfolio-add-title" name="title" type="text" autocomplete="off"/>
+						</div>
+						<div class="portfolio-form-field">
+							<label for="portfolio-add-category">Catégorie</label>
+							<select id="portfolio-add-category" name="category">
+								<option value="0"></option>
+							</select>
+						</div>
+					</div>
+					<div class="dialog-footer">
+						<div style="text-align: center; padding: 3em 0;">
+							<input type="button" id="gallery-edit-confirm-btn" value="Valider" disabled="true"/>
+						</div>
+					</div>
+				</form>
 			</section>
 		</div>
 	</dialog>
